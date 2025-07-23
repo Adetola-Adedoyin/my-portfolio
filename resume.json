@@ -1,0 +1,115 @@
+{
+    "name": "Adetola Adedoyin",
+    "contact": {
+        "location": "Lagos, Nigeria",
+        "email": "adetoladedoyin001@gmail.com",
+        "phone": "+(234)-904-7515-607",
+        "phoneLink": "tel:+2349047515607",
+        "linkedin": "https://linkedin.com/in/adetola-adedoyin",
+        "github": "https://github.com/Adetola-Adedoyin"
+    },
+    "professionalSummary": "Results-driven DevOps and Cloud Infrastructure Engineer trainee with hands-on experience deploying and managing scalable cloud infrastructure using AWS, Terraform, and containerization tools like Docker and Kubernetes. Skilled in building CI/CD pipelines using GitHub Actions, automating infrastructure provisioning, and ensuring system reliability with monitoring and scripting. Proven ability to apply Infrastructure as Code (IaC), troubleshoot complex systems, and improve operational workflows. Committed to continuous learning and capable of thriving in fast-paced, production-level environments.",
+    "education": {
+        "university": "University of Ilorin",
+        "degree": "BSc [Ed] Educational Technology",
+        "location": "Ilorin",
+        "date": "07/2023"
+    },
+    "certifications": [
+        {
+            "name": "Microsoft Office Specialist: Excel Associate (MOS-200)",
+            "issuer": "Microsoft",
+            "date": "06/2025"
+        },
+        {
+            "name": "AI-augmented Professional Development Skills",
+            "issuer": "ALX Africa",
+            "date": "08/2024"
+        },
+        {
+            "name": "Certified Teacher",
+            "issuer": "Teachers Registration Council of Nigeria",
+            "date": "11/2023"
+        }
+    ],
+    "skills": {
+        "Cloud & DevOps Tools": ["AWS", "Terraform", "Docker", "GitHub Actions", "Kubernetes", "Linux", "Jenkins", "Ansible", "Bash", "PowerShell", "Nginx", "Python", "EC2", "IAM", "S3"],
+        "Technical Skills": ["Infrastructure as Code (IaC)", "CI/CD Pipeline Automation", "System Monitoring", "Virtualization", "Log Management", "Version Control", "Network Configuration", "Scripting"],
+        "Soft Skills": ["Problem-Solving", "Collaboration", "Adaptability", "Critical Thinking", "Communication"]
+    },
+    "experience": [
+        {
+            "company": "Cyberspace Limited",
+            "role": "DevOps and Cloud Infrastructure Engineer Trainee",
+            "location": "Lagos",
+            "duration": "04/2025 - Present",
+            "responsibilities": [
+                "Designed and deployed a fully automated multi-tier web application on AWS using EC2, VPC, subnets, security groups, and Terraform.",
+                "Built and containerized a Spring Boot application using Docker, and automated deployment with GitHub Actions.",
+                "Configured monitoring tools and scripts to track system logs and uptime on virtual machines.",
+                "Installed and managed Linux virtual machines on physical servers, ensuring proper configuration and network access.",
+                "Practiced IAM role and policy setup, SSM configuration, and CI/CD integration for seamless deployment to production-like environments.",
+                "Provided technical support by diagnosing and resolving hardware related issues to ensure optimal system performance and minimal downtime."
+            ]
+        },
+        {
+            "company": "Ekiti State University Staff School",
+            "role": "Head of Department / Tech Support Specialist",
+            "location": "Ekiti",
+            "duration": "09/2023 - 07/2024",
+            "responsibilities": [
+                "Streamlined ICT processes by automating administrative workflows and digital documentation.",
+                "Supported 200+ users by managing system-level tasks, software installations, and basic network troubleshooting.",
+                "Coordinated departmental resources and optimized technical operations during critical academic cycles."
+            ]
+        }
+    ],
+    "projects": [
+        {
+            "name": "Dotnet app deployment on Ubuntu server",
+            "description": "This repository contains deployment steps for the eShopOnWeb application using Docker and NGINX on a Linux server.",
+            "link": "https://github.com/Adetola-Adedoyin/dotnet-app-on-prem"
+        },
+                {
+            "name": "Multi-Tier AWS Deployment with Terraform",
+            "description": "Provisioned cloud infrastructure using Terraform modules (VPC, EC2, security groups). Deployed three EC2 instances to cater for front-end, backend, and database. Configured access via public IP.",
+            "link": "https://github.com/Adetola-Adedoyin/Educloud"
+        },
+        {
+            "name": "Virtual Machine Monitoring with Custom Bash Scripts",
+            "description": "Wrote scripts to monitor system logs, memory usage, and service uptime on Linux servers. Improved visibility into system health, reduced downtime via early alerting.",
+            "link": "https://github.com/Adetola-Adedoyin/system-maintenance-tool"
+        },
+        {
+            "name": "CI/CD Pipeline for Spring Boot App",
+            "description": "Built GitHub Actions pipeline that builds, tests, packages, and deploys app on AWS. Integrated Docker image pull, SSM command execution, and container run automation.",
+            "link": "https://github.com/Adetola-Adedoyin/spring-boot-update-2"
+        },
+        {
+            "name": "Terraform-EC2-S3",
+            "description": "Provisioned an infrastructure using Terraform. The infrastructure creates an EC2 instance and then stores the state file in an S3 bucket.",
+            "link": "https://github.com/Adetola-Adedoyin/Terraform-EC2-S3"
+        },
+        {
+            "name": "Ubuntu-Nginx ASP.NET Core Deployment Script",
+            "description": "This Bash script automates the deployment of an ASP.NET Core application (BookPortel) on an Ubuntu server. It sets up the necessary dependencies, configures Nginx as a reverse proxy, and ensures the application runs as a systemd service for production readiness.",
+            "link": "https://github.com/Adetola-Adedoyin/ubuntu-nginx"
+        },
+        {
+            "name": "Windows IIS Automation Script",
+            "description": "Developed a Bash script to automate the installation and configuration of IIS on a server via the terminal.",
+            "link": "https://github.com/Adetola-Adedoyin/windows-IIS"
+        }
+    ],
+    "interests": [
+        "Cloud Automation",
+        "Infrastructure Design",
+        "Troubleshooting",
+        "Teaching",
+        "Tech Writing",
+        "Exploring DevOps Tools",
+        "Open Source Contribution",
+        "IT Support"
+    ],
+    "profilePicture": "./profile.jpg"
+}

@@ -1,0 +1,809 @@
+:root {
+    /* Bold & Playful Colors (Light Mode Defaults) */
+    --primary-color: #ff2d55; /* A vibrant, energetic red/pink */
+    --secondary-color: #5856d6; /* A deep, rich purple */
+    --accent-blue: #007aff; /* Classic Apple Blue, used for specific highlights */
+    --accent-green: #34c759; /* Lively Green */
+    --accent-orange: #ff9f0a; /* Bright Orange */
+    --accent-yellow: #ffcc00; /* Sunny Yellow */
+
+    /* Enhanced Neutrals (Light Mode Defaults) */
+    --background-light: #fefefe; /* Near white for a crisp base */
+    --background-dark: #f0f2f5; /* Soft light gray for contrast sections */
+    --card-background: #ffffff;
+    --text-color-dark: #1a1a1c; /* Almost black */
+    --text-color-medium: #333336;
+    --text-color-light: #77777a;
+
+    /* Styling Elements */
+    --border-radius-xl: 20px;
+    --border-radius-lg: 15px;
+    --border-radius-md: 10px;
+    --transition-speed: 0.4s; /* Slightly slower for more noticeable effects */
+    --box-shadow-light: 0 5px 15px rgba(0, 0, 0, 0.08);
+    --box-shadow-medium: 0 10px 25px rgba(0, 0, 0, 0.12);
+    --box-shadow-strong: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark Mode Variables */
+body.dark-mode {
+    --primary-color: #ff668a; /* Lighter red for visibility on dark */
+    --secondary-color: #9b9aff; /* Lighter purple for visibility on dark */
+    --accent-blue: #3399ff;
+    --accent-green: #66cc7e;
+    --accent-orange: #ffb84d;
+    --accent-yellow: #ffe666;
+
+    --background-light: #1c1c1e; /* Darkest background */
+    --background-dark: #2c2c2e; /* Slightly lighter dark background */
+    --card-background: #242426; /* Darker card background */
+    --text-color-dark: #f2f2f7; /* Light text for dark backgrounds */
+    --text-color-medium: #e0e0e0;
+    --text-color-light: #a0a0a0;
+
+    --box-shadow-light: 0 5px 15px rgba(0, 0, 0, 0.3);
+    --box-shadow-medium: 0 10px 25px rgba(0, 0, 0, 0.4);
+    --box-shadow-strong: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-light);
+    color: var(--text-color-medium);
+    line-height: 1.7;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease; /* Smooth transition for dark/light mode */
+}
+
+/* Global Animations & Effects */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top left, var(--background-dark) 0%, transparent 40%),
+                radial-gradient(circle at bottom right, var(--background-dark) 0%, transparent 40%);
+    opacity: 0.3;
+    z-index: -1;
+    animation: backgroundPulse 10s infinite alternate;
+    transition: background var(--transition-speed) ease, opacity var(--transition-speed) ease; /* Smooth transition for dark mode */
+}
+
+@keyframes backgroundPulse {
+    0% { transform: scale(1); opacity: 0.3; }
+    100% { transform: scale(1.05); opacity: 0.4; }
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+    color: var(--text-color-dark);
+    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    transition: color var(--transition-speed) ease;
+}
+
+h1 {
+    font-size: 4.5rem; /* Larger, bolder */
+    text-align: center;
+    line-height: 1.1;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+}
+
+h2 {
+    font-size: 3.5rem; /* Larger */
+    margin-bottom: 3rem;
+    position: relative;
+    padding-bottom: 1rem;
+    text-align: center;
+    color: var(--secondary-color); /* Section titles get the secondary color */
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%) scaleX(0); /* Initial state for animation */
+    width: 100px; /* Longer underline */
+    height: 6px;
+    background-color: var(--primary-color);
+    border-radius: 3px;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color var(--transition-speed) ease; /* Smooth cubic bezier transition */
+}
+
+section.is-active h2::after {
+    transform: translateX(-50%) scaleX(1); /* Animate underline on section active */
+}
+
+h3 {
+    font-size: 2.2rem;
+    margin-bottom: 1.2rem;
+}
+
+p {
+    font-size: 1.25rem; /* Larger paragraph text */
+    color: var(--text-color-light);
+    max-width: 850px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    transition: color var(--transition-speed) ease;
+}
+
+.highlight-text {
+    color: var(--primary-color);
+    font-weight: 800;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.05); /* Adjusted for dark mode compatibility */
+    transition: color var(--transition-speed) ease;
+}
+
+.light-text {
+    color: var(--text-color-light);
+    font-size: 1.05rem;
+    transition: color var(--transition-speed) ease;
+}
+
+/* Navigation Bar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 6%; /* More padding */
+    background-color: var(--card-background); /* Use card background for nav */
+    box-shadow: var(--box-shadow-light);
+    position: fixed;
+    width: 88%; /* Adjust for padding */
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(20px) saturate(180%); /* Stronger blur and saturation */
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-radius: 0 0 var(--border-radius-xl) var(--border-radius-xl); /* Rounded bottom corners */
+    transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-bottom var(--transition-speed) ease;
+}
+
+.nav-brand {
+    font-weight: 900; /* Extra bold */
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    letter-spacing: -0.08em;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.05); /* Adjusted for dark mode compatibility */
+    transition: color var(--transition-speed) ease;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin-left: 3rem; /* More space between links */
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: var(--text-color-medium);
+    font-weight: 600;
+    font-size: 1.15rem;
+    transition: color var(--transition-speed) ease, transform 0.3s ease, text-shadow 0.3s ease;
+    position: relative;
+    padding: 0.5rem 0; /* Add padding for a larger hit area */
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 50%; /* Start from center */
+    bottom: 0;
+    transform: translateX(-50%) scaleX(0); /* Hidden and scaled down */
+    width: 100%; /* Full width underline */
+    height: 3px; /* Thicker underline */
+    background-color: var(--secondary-color); /* Secondary color for underline */
+    border-radius: 2px;
+    transition: transform 0.4s cubic-bezier(0.17, 0.84, 0.44, 1), background-color var(--transition-speed) ease; /* Bouncier transition */
+}
+
+nav ul li a:hover {
+    color: var(--secondary-color); /* Hover color is secondary */
+    transform: translateY(-3px);
+    text-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Adjusted for dark mode compatibility */
+}
+
+nav ul li a:hover::after {
+    transform: translateX(-50%) scaleX(1); /* Grow to full width */
+}
+
+/* Dark Mode Toggle Button */
+.theme-switcher {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--text-color-medium);
+    transition: color var(--transition-speed) ease, transform 0.2s ease;
+    margin-left: 2rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-switcher:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+    background-color: rgba(var(--primary-color-rgb), 0.1); /* Subtle background on hover */
+}
+
+body.dark-mode .theme-switcher {
+    color: var(--text-color-dark); /* Ensure contrast in dark mode */
+}
+
+/* Sections */
+section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10rem 6% 6rem; /* More generous padding */
+    opacity: 0;
+    transform: translateY(80px) scale(0.95); /* More pronounced initial state */
+    transition: background-color 0.6s ease, transform 0.6s ease, opacity 0.6s ease;
+    overflow: hidden; /* Hide overflowing elements from animations */
+}
+
+/* Alternating section backgrounds with subtle patterns */
+section:nth-of-type(even) {
+    background-color: var(--background-dark);
+    background-image: radial-gradient(circle at 10% 20%, rgba(0,0,0,0.03) 0%, transparent 50%),
+                      radial-gradient(circle at 90% 80%, rgba(0,0,0,0.03) 0%, transparent 50%);
+    transition: background-color var(--transition-speed) ease, background-image var(--transition-speed) ease;
+}
+section:nth-of-type(odd) {
+    background-color: var(--background-light);
+    background-image: radial-gradient(circle at 90% 20%, rgba(0,0,0,0.02) 0%, transparent 50%),
+                      radial-gradient(circle at 10% 80%, rgba(0,0,0,0.02) 0%, transparent 50%);
+    transition: background-color var(--transition-speed) ease, background-image var(--transition-speed) ease;
+}
+
+section.is-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Buttons */
+.button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1.2rem 2.8rem; /* Larger button */
+    border-radius: 40px; /* More rounded */
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-top: 3rem;
+    transition: background-color var(--transition-speed) ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.4); /* Stronger, colored shadow */
+    letter-spacing: 0.05em;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+.button:hover::before {
+    left: 100%;
+}
+
+.button:hover {
+    background-color: var(--secondary-color); /* Hover to secondary color */
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(var(--secondary-color-rgb), 0.5); /* Different hover shadow */
+}
+
+/* Home Section */
+#home {
+    text-align: center;
+    background: linear-gradient(135deg, var(--background-light) 0%, var(--background-dark) 100%);
+    position: relative;
+    overflow: hidden;
+    transition: background var(--transition-speed) ease;
+}
+
+.profile-picture {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 3rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25); /* Even stronger shadow */
+    border: 8px solid var(--card-background); /* Thicker white border */
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color var(--transition-speed) ease;
+}
+
+.profile-picture:hover {
+    transform: scale(1.05) rotate(5deg);
+}
+
+/* About Section */
+#about .about-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1000px;
+    gap: 2.5rem;
+    background-color: var(--card-background);
+    padding: 4rem; /* More padding */
+    border-radius: var(--border-radius-xl); /* More rounded */
+    box-shadow: var(--box-shadow-medium);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+
+#about p {
+    text-align: justify; /* Justify text for a more formal look */
+    margin-bottom: 0.8rem;
+}
+
+#about h3 {
+    color: var(--accent-green);
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    font-size: 2rem;
+    transition: color var(--transition-speed) ease;
+}
+
+#about ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    text-align: left;
+}
+
+#about ul li {
+    background-color: var(--background-dark); /* Darker background for list items */
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 1rem;
+    border-left: 6px solid var(--accent-blue); /* Thicker accent blue border */
+    font-size: 1.05rem;
+    color: var(--text-color-medium);
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, border-left-color 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+#about ul li:hover {
+    transform: translateX(10px) scale(1.01); /* More pronounced slide */
+    background-color: var(--background-light);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.experience-item {
+    background-color: var(--background-dark); /* Darker background */
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    text-align: left;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+
+.experience-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.experience-item h4 {
+    color: var(--primary-color); /* Experience title in primary color */
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+    font-size: 1.5rem;
+    transition: color var(--transition-speed) ease;
+}
+
+.experience-item ul {
+    list-style: disc;
+    margin-left: 25px; /* More indentation */
+    margin-top: 1.2rem;
+}
+
+.experience-item ul li {
+    background-color: transparent;
+    border-left: none;
+    padding: 0.3rem 0;
+    margin-bottom: 0.4rem;
+    font-size: 1rem;
+    color: var(--text-color-medium);
+    transition: color var(--transition-speed) ease;
+}
+
+
+/* Projects Section */
+#projects .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Larger min width */
+    gap: 3rem; /* More space */
+    width: 100%;
+    max-width: 1300px;
+    margin-top: 4rem;
+}
+
+.project-card {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-xl);
+    padding: 2.5rem; /* More padding */
+    box-shadow: var(--box-shadow-medium);
+    transition: transform 0.4s ease, box-shadow 0.4s ease, background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: var(--primary-color); /* Top border accent */
+    border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
+    transform: translateY(-100%);
+    transition: transform 0.4s ease-out, background-color var(--transition-speed) ease;
+}
+
+.project-card:hover::before {
+    transform: translateY(0);
+}
+
+.project-card:hover {
+    transform: translateY(-15px) scale(1.02); /* More lift and slight scale */
+    box-shadow: var(--box-shadow-strong);
+}
+
+.project-card h3 {
+    color: var(--accent-orange); /* Orange for project titles */
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    transition: color var(--transition-speed) ease;
+}
+
+.project-card p {
+    font-size: 1.05rem;
+    color: var(--text-color-light);
+    text-align: left;
+    margin-bottom: 1.8rem;
+    flex-grow: 1;
+    transition: color var(--transition-speed) ease;
+}
+
+.project-card .project-links a {
+    display: inline-block;
+    color: var(--accent-blue); /* Links in accent blue */
+    text-decoration: none;
+    font-weight: 600;
+    margin-right: 1.8rem;
+    transition: color var(--transition-speed) ease, transform 0.2s ease;
+    font-size: 1rem;
+    position: relative;
+}
+
+.project-card .project-links a::after {
+    content: '→'; /* Arrow icon */
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%) scale(0);
+    transition: transform 0.3s ease;
+    color: var(--accent-blue);
+}
+
+.project-card .project-links a:hover {
+    color: var(--secondary-color);
+}
+
+.project-card .project-links a:hover::after {
+    transform: translateY(-50%) scale(1);
+}
+
+/* Skills Section */
+#skills .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Larger min width */
+    gap: 2.5rem;
+    width: 100%;
+    max-width: 1100px;
+    margin-top: 4rem;
+}
+
+.skill-category {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-xl);
+    padding: 2.5rem;
+    box-shadow: var(--box-shadow-medium);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.skill-category:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.skill-category h3 {
+    color: var(--accent-purple); /* Purple for skill categories */
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    text-align: center;
+    position: relative;
+    transition: color var(--transition-speed) ease;
+}
+
+.skill-category h3::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background-color: var(--accent-purple);
+    border-radius: 2px;
+    transition: background-color var(--transition-speed) ease;
+}
+
+.skill-category ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem; /* More space between skills */
+}
+
+.skill-category ul li {
+    background-color: var(--background-dark); /* Darker background for pills */
+    color: var(--text-color-dark);
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px; /* More pill-shaped */
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, transform 0.2s ease, box-shadow 0.2s ease, border-color var(--transition-speed) ease;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.skill-category ul li:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Adjusted for dark mode compatibility */
+}
+
+/* Contact Section */
+#contact .contact-content {
+    text-align: center;
+    max-width: 800px;
+    background-color: var(--card-background);
+    padding: 4rem;
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--box-shadow-medium);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+
+#contact .contact-links {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem; /* More space */
+    flex-wrap: wrap;
+}
+
+#contact .contact-links a {
+    display: flex;
+    flex-direction: column; /* Stack icon and text */
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-color-dark);
+    font-weight: 600;
+    font-size: 1.35rem; /* Larger text */
+    transition: color var(--transition-speed) ease, transform 0.3s ease;
+}
+
+#contact .contact-links a:hover {
+    color: var(--primary-color);
+    transform: translateY(-8px);
+}
+
+#contact .contact-links a svg {
+    margin-bottom: 0.8rem; /* Space between icon and text */
+    width: 35px; /* Larger icons */
+    height: 35px;
+    fill: var(--secondary-color); /* Icons in secondary color */
+    transition: fill var(--transition-speed) ease, transform 0.3s ease;
+}
+
+#contact .contact-links a:hover svg {
+    fill: var(--primary-color); /* Hover to primary color */
+    transform: scale(1.1);
+}
+
+/* ScrollTrigger Animations (initial hidden state) */
+.section-hidden {
+    opacity: 0;
+    transform: translateY(80px) scale(0.95);
+}
+
+.section-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Responsiveness */
+@media (max-width: 1200px) {
+    h1 {
+        font-size: 3.8rem;
+    }
+    h2 {
+        font-size: 2.8rem;
+    }
+    section {
+        padding: 8rem 5% 5rem;
+    }
+    .profile-picture {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 992px) {
+    nav {
+        padding: 1rem 4%;
+        width: 92%;
+    }
+    nav ul li {
+        margin-left: 2rem;
+    }
+    h1 {
+        font-size: 3rem;
+    }
+    h2 {
+        font-size: 2.2rem;
+    }
+    .button {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+    #about .about-content,
+    #contact .contact-content {
+        padding: 3rem;
+    }
+    #projects .projects-grid,
+    #skills .skills-grid {
+        gap: 2rem;
+    }
+    .project-card, .skill-category {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: center; /* Center nav items when stacked */
+        padding: 1rem 2%;
+        width: 96%;
+        border-radius: 0; /* Remove bottom border radius on mobile */
+    }
+
+    nav ul {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+
+    nav ul li {
+        margin: 0.5rem 0.8rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    p {
+        font-size: 1.1rem;
+    }
+
+    section {
+        padding: 6rem 5% 4rem;
+    }
+
+    .profile-picture {
+        width: 180px;
+        height: 180px;
+    }
+
+    #about p {
+        text-align: center; /* Center text on mobile */
+    }
+
+    .experience-item {
+        padding: 1.5rem;
+    }
+
+    #projects .projects-grid,
+    #skills .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #contact .contact-links {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    #contact .contact-links a {
+        font-size: 1.2rem;
+    }
+    #contact .contact-links a svg {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2rem;
+    }
+    h2 {
+        font-size: 1.6rem;
+    }
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+    }
+    .button {
+        padding: 0.8rem 1.2rem;
+        font-size: 1rem;
+    }
+    #about .about-content,
+    #contact .contact-content {
+        padding: 1.5rem;
+    }
+    .project-card, .skill-category {
+        padding: 1.5rem;
+    }
+}
