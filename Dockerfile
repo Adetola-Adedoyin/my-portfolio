@@ -11,4 +11,4 @@ COPY . /app
 EXPOSE 8000
 
 # Command to run the Python HTTP server
-CMD ["python", "-m", "http.server", "8000"]
+CMD ["python", "-m", "http.server", "8000", "--bind", "0.0.0.0"]
