@@ -1,14 +1,11 @@
-# Use a lightweight Python base image
-FROM python:3.9-slim-buster
+# Use nginx alpine for a lightweight web server
+FROM nginx:alpine
 
-# Set the working directory in the container
-WORKDIR /app
+# Copy all portfolio files to nginx html directory
+COPY . /usr/share/nginx/html/
 
-# Copy the entire portfolio directory into the container
-COPY . /app
+# Expose port 80
+EXPOSE 80
 
-# Expose the port the server will listen on
-EXPOSE 8000
-
-# Command to run the Python HTTP server
-CMD ["python", "-m", "http.server", "8000", "--bind", "0.0.0.0"]
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
