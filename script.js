@@ -1,49 +1,198 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // GSAP Animations (existing code)
-    gsap.registerPlugin(ScrollTrigger);
+    // Hide page loader immediately
+    const pageLoader = document.querySelector('.page-loader');
+    if (pageLoader) {
+        pageLoader.style.display = 'none';
+    }
 
-    const sections = gsap.utils.toArray('section');
-    sections.forEach(section => {
-        gsap.fromTo(section,
-            { opacity: 0, translateY: 60 },
-            {
-                opacity: 1,
-                translateY: 0,
-                duration: 1,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: section,
-                    start: 'top 75%', // When the top of the section hits 75% of the viewport
-                    end: 'bottom top',
-                    toggleActions: 'play none none reverse', // Play on enter, reverse on leave
-                    // Markers for debugging: markers: true
+    // Initialize particles.js
+    if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#ff2d55' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#ff2d55',
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: true,
+                    out_mode: 'out'
                 }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'grab' },
+                    onclick: { enable: true, mode: 'push' },
+                    resize: true
+                },
+                modes: {
+                    grab: { distance: 140, line_linked: { opacity: 0.5 } },
+                    push: { particles_nb: 4 }
+                }
+            },
+            retina_detect: true
+        });
+    }
+
+    // Initialize Typed.js
+    if (typeof Typed !== 'undefined') {
+        new Typed('#typed', {
+            stringsElement: '#typed-strings',
+            typeSpeed: 50,
+            backSpeed: 30,
+            backDelay: 1500,
+            startDelay: 1000,
+            loop: true,
+            smartBackspace: true
+        });
+    }
+
+    // Custom cursor
+    const cursor = document.querySelector('.custom-cursor');
+    if (window.innerWidth > 992) { // Only on desktop
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursor.classList.add('active');
+        });
+
+        document.addEventListener('mouseout', () => {
+            cursor.classList.remove('active');
+        });
+
+        // Add hover effect to interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, .project-card, .skill-category');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+    }
+
+    // GSAP Animations
+    if (typeof gsap !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const sections = gsap.utils.toArray('section');
+        sections.forEach(section => {
+            section.style.opacity = '1';
+            section.style.transform = 'translateY(0) scale(1)';
+        });
+    }
+
+    // Animate skill meters when in view
+    const skillMeters = document.querySelectorAll('.meter-fill');
+    skillMeters.forEach(meter => {
+        const targetWidth = meter.style.width;
+        meter.style.width = '0';
+        
+        ScrollTrigger.create({
+            trigger: meter,
+            start: 'top 80%',
+            onEnter: () => {
+                meter.style.width = targetWidth;
+            },
+            onLeaveBack: () => {
+                meter.style.width = '0';
             }
-        );
+        });
     });
 
-    // Fetch and display resume data (existing code)
+    // Back to top button
+    const backToTopButton = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopButton.classList.add('visible');
+        } else {
+            backToTopButton.classList.remove('visible');
+        }
+    });
+
+    backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Navbar scroll effect
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    });
+
+    // Project filtering function (will be called after projects are loaded)
+    function initializeProjectFiltering() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filter = button.getAttribute('data-filter');
+                
+                // Show/hide projects based on filter
+                if (filter === 'all') {
+                    projectCards.forEach(card => {
+                        gsap.to(card, { opacity: 1, scale: 1, duration: 0.5 });
+                        card.style.display = 'flex';
+                    });
+                } else {
+                    projectCards.forEach(card => {
+                        // Check if project has the filter tag
+                        if (card.getAttribute('data-tags') && card.getAttribute('data-tags').includes(filter)) {
+                            gsap.to(card, { opacity: 1, scale: 1, duration: 0.5 });
+                            card.style.display = 'flex';
+                        } else {
+                            gsap.to(card, { opacity: 0, scale: 0.8, duration: 0.5, onComplete: () => {
+                                card.style.display = 'none';
+                            }});
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    // Fetch and display resume data
     fetch('resume.json')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log('Resume data loaded:', data);
             // Update professional summary
-            document.querySelector('#home p').textContent = data.professionalSummary;
+            const homeParagraph = document.querySelector('#home p');
+            if (homeParagraph) {
+                homeParagraph.textContent = data.professionalSummary;
+            }
 
             // Update profile picture
             const profilePictureElement = document.querySelector('.profile-picture');
             if (data.profilePicture) {
                 profilePictureElement.src = data.profilePicture;
             }
-
-            // Update About section education and certifications (assuming you load them similarly)
-            // You might need to adjust these selectors based on your HTML structure
-            // Example for dynamic education and certifications if not directly hardcoded:
-            // const educationUl = document.querySelector('#about ul');
-            // data.education.forEach(edu => {
-            //     const li = document.createElement('li');
-            //     li.innerHTML = `<strong>${edu.university}</strong> – ${edu.degree} (${edu.date})`;
-            //     educationUl.appendChild(li);
-            // });
 
             // Dynamically load Experience
             const experienceDetails = document.getElementById('experience-details');
@@ -64,10 +213,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Dynamically load Projects
             const projectsGrid = document.getElementById('projects-grid');
-            if (projectsGrid) {
+            if (projectsGrid && data.projects) {
+                console.log('Loading projects:', data.projects);
                 data.projects.forEach(project => {
+                    // Determine project tags based on description
+                    const tags = [];
+                    if (project.description.toLowerCase().includes('aws')) tags.push('aws');
+                    if (project.description.toLowerCase().includes('terraform')) tags.push('terraform');
+                    if (project.description.toLowerCase().includes('docker')) tags.push('docker');
+                    
                     const projectCard = document.createElement('div');
                     projectCard.className = 'project-card';
+                    projectCard.setAttribute('data-tags', tags.join(' '));
                     projectCard.innerHTML = `
                         <h3>${project.name}</h3>
                         <p>${project.description}</p>
@@ -77,6 +234,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                     projectsGrid.appendChild(projectCard);
                 });
+                
+                // Initialize project filtering after projects are loaded
+                initializeProjectFiltering();
+            } else {
+                console.error('Projects grid not found or no projects data');
             }
 
             // Dynamically load Skills
@@ -105,10 +267,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         })
-        .catch(error => console.error('Error fetching resume data:', error));
+        .catch(error => {
+            console.error('Error fetching resume data:', error);
+            // Fallback: show a message if data can't be loaded
+            const projectsGrid = document.getElementById('projects-grid');
+            if (projectsGrid) {
+                projectsGrid.innerHTML = '<p>Unable to load projects. Please check the console for errors.</p>';
+            }
+        });
 
-
-    // Dark Mode Toggle Logic (NEW CODE)
+    // Dark Mode Toggle Logic
     const themeSwitcher = document.getElementById('theme-switcher');
     const body = document.body;
 
@@ -118,10 +286,24 @@ document.addEventListener('DOMContentLoaded', () => {
             body.classList.add('dark-mode');
             themeSwitcher.textContent = '🌙'; // Moon icon for dark mode
             localStorage.setItem('theme', 'dark');
+            
+            // Update particles color for dark mode
+            if (typeof pJSDom !== 'undefined' && pJSDom.length > 0) {
+                pJSDom[0].pJS.particles.color.value = '#ff668a';
+                pJSDom[0].pJS.particles.line_linked.color = '#ff668a';
+                pJSDom[0].pJS.fn.particlesRefresh();
+            }
         } else {
             body.classList.remove('dark-mode');
             themeSwitcher.textContent = '☀️'; // Sun icon for light mode
             localStorage.setItem('theme', 'light');
+            
+            // Update particles color for light mode
+            if (typeof pJSDom !== 'undefined' && pJSDom.length > 0) {
+                pJSDom[0].pJS.particles.color.value = '#ff2d55';
+                pJSDom[0].pJS.particles.line_linked.color = '#ff2d55';
+                pJSDom[0].pJS.fn.particlesRefresh();
+            }
         }
     };
 
@@ -139,5 +321,19 @@ document.addEventListener('DOMContentLoaded', () => {
     themeSwitcher.addEventListener('click', () => {
         const isCurrentlyDarkMode = body.classList.contains('dark-mode');
         setTheme(!isCurrentlyDarkMode); // Toggle the theme
+    });
+    
+    // Add smooth scrolling to all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                window.scrollTo({
+                    top: target.offsetTop - 100, // Offset for fixed header
+                    behavior: 'smooth'
+                });
+            }
+        });
     });
 });
