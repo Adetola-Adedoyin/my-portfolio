@@ -79,7 +79,7 @@
             "name": "Multi Tenant K8s Cluster",
             "description": "This repository contains deployment steps for the deployment of Kubernetes on Bare Metal",
             "link": "https://github.com/Adetola-Adedoyin/Multi-tenant-K8s-cluster"
-        }
+        },
         {
             "name": "Virtual Machine Monitoring with Custom Bash Scripts",
             "description": "Wrote scripts to monitor system logs, memory usage, and service uptime on Linux servers. Improved visibility into system health, reduced downtime via early alerting.",
