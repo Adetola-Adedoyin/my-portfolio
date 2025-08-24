@@ -76,9 +76,14 @@
             "link": "https://github.com/Adetola-Adedoyin/Educloud"
         },
         {
-            "name": "Multi Tenant K8s Cluster",
+            "name": "Multi-Tenant K8s Cluster",
             "description": "This repository contains deployment steps for the deployment of Kubernetes on Bare Metal",
             "link": "https://github.com/Adetola-Adedoyin/Multi-tenant-K8s-cluster"
+        },
+         {
+            "name": "GitOps workflow",
+            "description": "This project showcases a complete GitOps workflow and monitoring setup for a frontend-only portfolio application deployed on a local Kubernetes cluster using Helm, ArgoCD, Prometheus, and Grafana.",
+            "link": "https://github.com/Adetola-Adedoyin/adetola-k8s-portfolio"
         },
         {
             "name": "Virtual Machine Monitoring with Custom Bash Scripts",
