@@ -77,7 +77,7 @@
         },
         {
             "name": "Multi Tenant K8s Cluster",
-            "description": "This repository contains deployment steps for the Kubernetes on Bare Metal",
+            "description": "This repository contains deployment steps for the deployment of Kubernetes on Bare Metal",
             "link": "https://github.com/Adetola-Adedoyin/Multi-tenant-K8s-cluster"
         }
         {
