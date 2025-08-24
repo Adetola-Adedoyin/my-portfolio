@@ -33,7 +33,7 @@
         }
     ],
     "skills": {
-        "Cloud & DevOps Tools": ["AWS", "Terraform", "Docker", "GitHub Actions", "Kubernetes", "Linux", "Jenkins", "Ansible", "Bash", "PowerShell", "Nginx", "Python", "EC2", "IAM", "S3"],
+        "Cloud & DevOps Tools": ["AWS", "Terraform", "Docker", "GitHub Actions", "Kubernetes", "Linux", "Jenkins", "Ansible", "Bash", "PowerShell", "Nginx", "ArgoCD", "Helm Charts", "Prometheus", "Grafana", "Python", "EC2", "IAM", "S3"],
         "Technical Skills": ["Infrastructure as Code (IaC)", "CI/CD Pipeline Automation", "System Monitoring", "Virtualization", "Log Management", "Version Control", "Network Configuration", "Scripting"],
         "Soft Skills": ["Problem-Solving", "Collaboration", "Adaptability", "Critical Thinking", "Communication"]
     },
@@ -75,6 +75,11 @@
             "description": "Provisioned cloud infrastructure using Terraform modules (VPC, EC2, security groups). Deployed three EC2 instances to cater for front-end, backend, and database. Configured access via public IP.",
             "link": "https://github.com/Adetola-Adedoyin/Educloud"
         },
+        {
+            "name": "Multi Tenant K8s Cluster",
+            "description": "This repository contains deployment steps for the Kubernetes on Bare Metal",
+            "link": "https://github.com/Adetola-Adedoyin/Multi-tenant-K8s-cluster"
+        }
         {
             "name": "Virtual Machine Monitoring with Custom Bash Scripts",
             "description": "Wrote scripts to monitor system logs, memory usage, and service uptime on Linux servers. Improved visibility into system health, reduced downtime via early alerting.",
