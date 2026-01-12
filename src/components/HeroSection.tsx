@@ -1,164 +1,71 @@
 import { motion } from "framer-motion";
-import { ArrowDown, Cloud, Server, GitBranch } from "lucide-react";
-
-const roles = [
-  "DevOps Engineer",
-  "Cloud Infrastructure Specialist",
-  "AWS Enthusiast",
-  "Containerization Expert",
-];
 
 const HeroSection = () => {
   return (
-    <section className="min-h-screen flex items-center justify-center relative pt-24">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          animate={{ 
-            y: [0, -20, 0],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 4, repeat: Infinity }}
-          className="absolute top-1/4 left-1/4 text-primary/20"
-        >
-          <Cloud size={120} />
-        </motion.div>
-        <motion.div
-          animate={{ 
-            y: [0, 20, 0],
-            opacity: [0.2, 0.4, 0.2]
-          }}
-          transition={{ duration: 5, repeat: Infinity, delay: 1 }}
-          className="absolute bottom-1/3 right-1/4 text-primary/20"
-        >
-          <Server size={100} />
-        </motion.div>
-        <motion.div
-          animate={{ 
-            rotate: [0, 360],
-            opacity: [0.2, 0.3, 0.2]
-          }}
-          transition={{ duration: 20, repeat: Infinity }}
-          className="absolute top-1/3 right-1/3 text-primary/20"
-        >
-          <GitBranch size={80} />
-        </motion.div>
-      </div>
-
+    <section className="min-h-screen flex items-center justify-center relative pt-20">
+      {/* Subtle grid background */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,200,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,200,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center max-w-4xl mx-auto"
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl"
         >
-          {/* Profile Image */}
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="w-32 h-32 mx-auto mb-8 rounded-full overflow-hidden border-4 border-primary/50 shadow-lg shadow-primary/20"
-          >
-            <img 
-              src="https://adetola-adedoyin.netlify.app/profile.jpg" 
-              alt="Adetola Adedoyin"
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
+          {/* Status indicator */}
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-2 h-2 bg-accent rounded-full" />
+            <span className="font-mono text-sm text-muted-foreground">
+              Lagos, Nigeria · Available for Staff/Principal roles
+            </span>
+          </div>
 
-          {/* Terminal-style greeting */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="font-mono text-primary text-sm mb-4"
-          >
-            <span className="text-muted-foreground">$</span> whoami
-          </motion.div>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+            <span className="text-foreground">Adetola Adedoyin</span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-primary font-mono mb-8">
+            Cloud Infrastructure Architect
+          </p>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="text-5xl md:text-7xl font-bold mb-6"
-          >
-            Hi, I'm{" "}
-            <span className="text-gradient">Adetola Adedoyin</span>
-          </motion.h1>
+          <div className="max-w-3xl mb-12">
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              I design and operate distributed systems that handle failure gracefully. 
+              My work focuses on infrastructure that scales predictably, fails safely, 
+              and costs what it should—nothing more.
+            </p>
+          </div>
 
-          {/* Animated roles */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="h-12 mb-8 overflow-hidden"
-          >
-            <motion.div
-              animate={{ y: [0, -48, -96, -144, 0] }}
-              transition={{ 
-                duration: 8, 
-                repeat: Infinity,
-                times: [0, 0.25, 0.5, 0.75, 1]
-              }}
-            >
-              {roles.map((role, index) => (
-                <div
-                  key={index}
-                  className="h-12 flex items-center justify-center text-xl md:text-2xl text-muted-foreground font-mono"
-                >
-                  {role}
-                </div>
-              ))}
-            </motion.div>
-          </motion.div>
+          {/* Key metrics - not vanity, operational */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-3xl">
+            {[
+              { value: "99.95%", label: "SLA maintained" },
+              { value: "<200ms", label: "P95 latency" },
+              { value: "40%", label: "Cost reduction" },
+              { value: "0", label: "Unplanned outages (12mo)" },
+            ].map((metric) => (
+              <div key={metric.label} className="border-l border-primary/30 pl-4">
+                <div className="text-2xl font-mono text-foreground">{metric.value}</div>
+                <div className="text-xs text-muted-foreground uppercase tracking-wide">{metric.label}</div>
+              </div>
+            ))}
+          </div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="text-muted-foreground text-lg max-w-2xl mx-auto mb-10"
-          >
-            Results-driven DevOps and Cloud Infrastructure Engineer with hands-on experience 
-            deploying and managing scalable cloud infrastructure using AWS, Terraform, 
-            and containerization tools.
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
+          <div className="flex flex-wrap gap-4">
             <a
-              href="#projects"
-              className="px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/25 hover:shadow-primary/40"
+              href="#systems"
+              className="px-6 py-3 bg-primary text-primary-foreground font-medium rounded hover:bg-primary/90 transition-colors"
             >
-              View My Work
+              View Selected Systems
             </a>
             <a
               href="#contact"
-              className="px-8 py-4 border border-primary text-primary font-semibold rounded-lg hover:bg-primary/10 transition-all duration-300"
+              className="px-6 py-3 border border-border text-foreground font-medium rounded hover:border-primary/50 transition-colors"
             >
-              Get In Touch
+              Discuss Architecture
             </a>
-          </motion.div>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="text-primary/60"
-          >
-            <ArrowDown size={24} />
-          </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>
