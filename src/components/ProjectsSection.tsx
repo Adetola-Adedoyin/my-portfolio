@@ -3,25 +3,46 @@ import { motion } from "framer-motion";
 const ProjectsSection = () => {
   const projects = [
     {
-      title: "Portfolio Website",
-      description: "Personal portfolio showcasing my infrastructure and development work",
-      tech: ["React", "Netlify", "Modern Design"],
-      link: "https://adetola-adedoyin.netlify.app",
-      emoji: "🌐"
-    },
-    {
-      title: "Cloud Infrastructure",
-      description: "AWS-based infrastructure projects with Terraform and Kubernetes",
-      tech: ["AWS", "Terraform", "Kubernetes"],
-      link: "https://adetola-adedoyin.netlify.app",
+      title: "AWS Multi-Tier Architecture",
+      description: "Scalable web application infrastructure with load balancers, auto-scaling groups, and RDS",
+      tech: ["AWS", "Terraform", "EC2", "RDS"],
+      link: "https://github.com/Adetola-Adedoyin",
       emoji: "☁️"
     },
     {
-      title: "DevOps Automation",
-      description: "CI/CD pipelines and automation tools for reliable deployments",
-      tech: ["GitHub Actions", "Docker", "Automation"],
-      link: "https://adetola-adedoyin.netlify.app",
+      title: "Kubernetes Cluster Management",
+      description: "Production-ready Kubernetes cluster with monitoring, logging, and automated deployments",
+      tech: ["Kubernetes", "Docker", "Helm", "Prometheus"],
+      link: "https://github.com/Adetola-Adedoyin",
+      emoji: "🚢"
+    },
+    {
+      title: "CI/CD Pipeline Automation",
+      description: "Automated deployment pipelines with testing, security scanning, and rollback capabilities",
+      tech: ["GitHub Actions", "Docker", "Terraform", "AWS"],
+      link: "https://github.com/Adetola-Adedoyin",
       emoji: "🚀"
+    },
+    {
+      title: "Infrastructure Monitoring",
+      description: "Comprehensive monitoring solution with alerting, dashboards, and performance metrics",
+      tech: ["Prometheus", "Grafana", "ELK Stack", "CloudWatch"],
+      link: "https://github.com/Adetola-Adedoyin",
+      emoji: "📊"
+    },
+    {
+      title: "Serverless Applications",
+      description: "Event-driven serverless architecture with Lambda functions and API Gateway",
+      tech: ["AWS Lambda", "API Gateway", "DynamoDB", "S3"],
+      link: "https://github.com/Adetola-Adedoyin",
+      emoji: "⚡"
+    },
+    {
+      title: "Security & Compliance",
+      description: "Security hardening, compliance automation, and vulnerability management systems",
+      tech: ["AWS Security", "Vault", "SIEM", "Compliance"],
+      link: "https://github.com/Adetola-Adedoyin",
+      emoji: "🔒"
     }
   ];
 
@@ -51,7 +72,7 @@ const ProjectsSection = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="grid md:grid-cols-3 lg:grid-cols-3 gap-8 mb-12">
             {projects.map((project, index) => (
               <motion.div
                 key={index}
