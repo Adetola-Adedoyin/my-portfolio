@@ -1,375 +1,244 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { ChevronDown, ExternalLink } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 interface System {
   title: string;
-  subtitle: string;
+  oneLiner: string;
   github: string;
-  problem: {
-    business: string;
-    technical: string;
-  };
+  problem: string;
   constraints: string[];
-  architecture: {
-    decision: string;
-    alternatives: string;
-    rationale: string;
-  };
-  failures: {
-    scenario: string;
-    mitigation: string;
-  }[];
-  metrics: { label: string; value: string }[];
+  decision: string;
+  rejected: string[];
+  failureModes: string[];
+  outcome: string;
   stack: string[];
 }
 
 const systems: System[] = [
   {
-    title: "Multi-Tier AWS Infrastructure",
-    subtitle: "Production-grade three-tier architecture with Terraform",
+    title: "Multi-tier AWS with Terraform",
+    oneLiner: "VPC + EC2 + RDS, fully codified",
     github: "https://github.com/Adetola-Adedoyin/Educloud",
-    problem: {
-      business: "Organization needed isolated environments for development, staging, and production with consistent infrastructure across all tiers. Manual provisioning was causing 2-week delays for new environment requests.",
-      technical: "Existing infrastructure was click-ops with undocumented security groups, inconsistent VPC configurations, and no disaster recovery capability. State drift was undetected until failures occurred.",
-    },
+    problem: "Needed isolated dev/staging/prod environments. Manual setup was taking 2 weeks per environment. No state tracking meant drift went unnoticed until failures.",
     constraints: [
-      "Budget ceiling of $3,000/month for non-production environments",
-      "Compliance requirement for data residency within specific AWS regions",
-      "Team of 2 responsible for infrastructure across 3 product teams",
-      "Zero tolerance for production data in non-production environments",
+      "$3k/month budget for non-prod",
+      "Data residency requirements",
+      "Team of 2 managing 3 product teams",
     ],
-    architecture: {
-      decision: "Terraform modules with remote state in S3, DynamoDB locking, and environment-specific tfvars. Three-tier VPC design with public ALB, private application tier, and isolated database subnet with no internet egress.",
-      alternatives: "Considered CloudFormation (rejected: poor state management, vendor lock-in), Pulumi (rejected: team expertise gap), and CDK (rejected: abstraction overhead for infrastructure-focused team).",
-      rationale: "Terraform's declarative model matches infrastructure thinking. Module composition allows reuse without copy-paste drift. State locking prevents concurrent modification disasters we'd experienced previously.",
-    },
-    failures: [
-      {
-        scenario: "Terraform state corruption during concurrent applies",
-        mitigation: "DynamoDB-based state locking with automatic retry logic. Implemented pre-apply checks that verify state consistency before any modification.",
-      },
-      {
-        scenario: "Security group misconfiguration exposing database ports",
-        mitigation: "OPA policies in CI that reject any security group allowing 0.0.0.0/0 to ports 3306, 5432, or 27017. Blocks merge, not just alerts.",
-      },
+    decision: "Terraform with S3 backend and DynamoDB locking. Modules for VPC, compute, database. Environment-specific tfvars. No Terraform Cloud — we don't need it.",
+    rejected: [
+      "CloudFormation — state management is worse, and we're not locked to AWS",
+      "Pulumi — team doesn't know TypeScript well enough",
+      "CDK — too much abstraction for infra work",
     ],
-    metrics: [
-      { label: "Environment provisioning", value: "14 days → 45 min" },
-      { label: "Configuration drift incidents", value: "0 in 12 months" },
-      { label: "Infrastructure cost reduction", value: "35%" },
+    failureModes: [
+      "State corruption during concurrent applies → DynamoDB lock + pre-apply state check",
+      "Security group misconfiguration → OPA policy blocks any rule with 0.0.0.0/0 to DB ports",
     ],
-    stack: ["Terraform", "AWS VPC", "EC2", "RDS", "S3", "IAM", "CloudWatch"],
+    outcome: "Environment provisioning: 2 weeks → 45 minutes. Zero drift incidents in 12 months.",
+    stack: ["Terraform", "AWS VPC", "EC2", "RDS", "S3", "IAM"],
   },
   {
-    title: "GitOps Platform with ArgoCD",
-    subtitle: "Declarative deployment pipeline for Kubernetes workloads",
+    title: "GitOps with ArgoCD",
+    oneLiner: "Git as source of truth for K8s state",
     github: "https://github.com/Adetola-Adedoyin/adetola-k8s-portfolio",
-    problem: {
-      business: "Deployment velocity was bottlenecked by manual kubectl operations. Average time from merge to production was 4 hours, with 15% of deployments requiring rollback due to configuration errors.",
-      technical: "No audit trail for cluster changes. Developers had direct kubectl access to production. Configuration lived in CI pipelines, making it impossible to answer 'what's currently running?'",
-    },
+    problem: "Deployments were kubectl-based. No audit trail. 4-hour average merge-to-prod. 15% rollback rate from config errors.",
     constraints: [
-      "Existing Kubernetes cluster on bare metal—no managed K8s available",
-      "Must support both Helm charts and raw manifests",
-      "Rollback must complete in under 60 seconds",
-      "Cannot require developers to learn new deployment tooling",
+      "Bare metal K8s — no managed offering",
+      "Must support Helm and raw manifests",
+      "Rollback under 60 seconds",
     ],
-    architecture: {
-      decision: "ArgoCD as single source of truth. Git repository structure: apps/ for ArgoCD Applications, charts/ for Helm, manifests/ for raw K8s. Sync waves for dependency ordering. Automated diff previews on PRs.",
-      alternatives: "Flux (rejected: weaker UI for debugging sync issues), Spinnaker (rejected: operational overhead for team size), Jenkins X (rejected: too opinionated on CI/CD flow).",
-      rationale: "ArgoCD's reconciliation loop ensures declared state matches cluster state. Self-healing catches manual kubectl changes. UI reduces mean-time-to-diagnosis during incidents.",
-    },
-    failures: [
-      {
-        scenario: "ArgoCD sync loop during resource quota exhaustion",
-        mitigation: "Resource quotas per namespace with alerting at 80% threshold. ArgoCD configured with sync retry backoff to prevent thundering herd on recovery.",
-      },
-      {
-        scenario: "Helm release stuck in pending-upgrade state",
-        mitigation: "Automated detection of stuck releases with force-sync capability. Runbook for manual secret cleanup when Helm state diverges.",
-      },
+    decision: "ArgoCD watching a Git repo. apps/ for Applications, charts/ for Helm, manifests/ for raw K8s. Sync waves for ordering. Diff previews on PRs.",
+    rejected: [
+      "Flux — weaker debugging UI",
+      "Spinnaker — too much operational overhead for our team size",
+      "Jenkins X — too opinionated about the whole pipeline",
     ],
-    metrics: [
-      { label: "Merge to production", value: "4 hours → 8 minutes" },
-      { label: "Deployment success rate", value: "85% → 99.2%" },
-      { label: "MTTR for config issues", value: "45 min → 3 min" },
+    failureModes: [
+      "Sync loop during quota exhaustion → alert at 80% quota, ArgoCD retry backoff",
+      "Helm stuck in pending-upgrade → automated detection + force-sync capability",
     ],
-    stack: ["Kubernetes", "ArgoCD", "Helm", "Prometheus", "Grafana", "GitHub Actions"],
+    outcome: "Merge to prod: 4 hours → 8 minutes. Deployment success: 85% → 99%.",
+    stack: ["Kubernetes", "ArgoCD", "Helm", "Prometheus", "Grafana"],
   },
   {
-    title: "Multi-Tenant Kubernetes Cluster",
-    subtitle: "Bare metal K8s with namespace isolation and resource governance",
+    title: "Multi-tenant K8s",
+    oneLiner: "Namespace isolation on bare metal",
     github: "https://github.com/Adetola-Adedoyin/Multi-tenant-K8s-cluster",
-    problem: {
-      business: "Three product teams sharing infrastructure costs but requiring isolation. Previous shared cluster had noisy-neighbor issues causing SLA breaches for lower-priority workloads.",
-      technical: "No resource boundaries between tenants. A memory leak in one application caused node pressure affecting all workloads. No chargeback visibility for cost allocation.",
-    },
+    problem: "Three teams on one cluster. Memory leak in one app caused node pressure for everyone. No cost attribution.",
     constraints: [
-      "Physical hardware—no cloud provider managed services",
-      "Must support both stateless and stateful workloads",
-      "Teams must self-serve within guardrails without platform team involvement",
-      "Network policies must prevent cross-tenant traffic by default",
+      "Physical hardware, no cloud",
+      "Stateless and stateful workloads",
+      "Teams must self-serve without platform team",
     ],
-    architecture: {
-      decision: "Namespace-per-tenant with ResourceQuotas, LimitRanges, and NetworkPolicies. Hierarchical namespaces for sub-teams. OPA Gatekeeper for admission control. Prometheus with tenant labels for cost attribution.",
-      alternatives: "Virtual clusters (rejected: operational complexity), separate clusters per tenant (rejected: hardware cost), namespace naming conventions only (rejected: no enforcement).",
-      rationale: "Kubernetes-native primitives provide enforcement without external dependencies. Gatekeeper policies are version-controlled and auditable. Single cluster reduces operational overhead while isolation prevents cross-tenant impact.",
-    },
-    failures: [
-      {
-        scenario: "Tenant exceeds resource quota during traffic spike",
-        mitigation: "Burstable quotas with hard limits. Alerting before quota breach. Self-service quota request workflow with approval SLA.",
-      },
-      {
-        scenario: "Network policy misconfiguration blocks legitimate cross-namespace traffic",
-        mitigation: "Policy testing in CI with connectivity matrix verification. Explicit allow-list for shared services namespace.",
-      },
+    decision: "Namespace per tenant with ResourceQuotas, LimitRanges, NetworkPolicies. OPA Gatekeeper for admission control. Hierarchical namespaces for sub-teams.",
+    rejected: [
+      "Virtual clusters — operational complexity wasn't worth it",
+      "Separate clusters — hardware cost too high",
+      "Naming conventions only — no enforcement",
     ],
-    metrics: [
-      { label: "Cross-tenant incidents", value: "0 in 18 months" },
-      { label: "Self-service provisioning", value: "95% of requests" },
-      { label: "Resource utilization improvement", value: "60%" },
+    failureModes: [
+      "Tenant exceeds quota during spike → burstable quotas with hard limits, alert before breach",
+      "NetworkPolicy blocks legitimate traffic → policy testing in CI with connectivity matrix",
     ],
-    stack: ["Kubernetes", "Calico", "OPA Gatekeeper", "Prometheus", "MetalLB"],
+    outcome: "Zero cross-tenant incidents in 18 months. 95% self-service provisioning.",
+    stack: ["Kubernetes", "Calico", "OPA Gatekeeper", "Prometheus"],
   },
   {
-    title: "Spring Boot CI/CD Pipeline",
-    subtitle: "Automated build, test, and deployment to AWS with SSM integration",
+    title: "Spring Boot CI/CD",
+    oneLiner: "GitHub Actions → Docker → AWS EC2 via SSM",
     github: "https://github.com/Adetola-Adedoyin/spring-boot-update-2",
-    problem: {
-      business: "Release cycles were monthly due to manual deployment risk. Hotfixes required weekend work and still took 6+ hours from code complete to production.",
-      technical: "No automated testing gate. Deployments were SSH-based with hardcoded credentials. Rollback required rebuilding previous artifact from memory.",
-    },
+    problem: "Monthly releases because deployment was risky. Hotfixes took 6+ hours. SSH-based deploys with hardcoded creds.",
     constraints: [
-      "Legacy EC2 instances—containerization was out of scope",
-      "Must maintain existing systemd service management",
-      "Zero-downtime deployments required for customer-facing API",
-      "AWS SSM preferred over direct SSH for security compliance",
+      "Legacy EC2 — containerization out of scope",
+      "Existing systemd service management",
+      "Zero-downtime required",
     ],
-    architecture: {
-      decision: "GitHub Actions with matrix builds for JDK versions. Docker build for consistency, but deployment extracts JAR for EC2. SSM Run Command for deployment with health check gates. Artifact versioning in S3 with 30-day retention.",
-      alternatives: "AWS CodePipeline (rejected: GitHub Actions already in use, context switching), direct SSH (rejected: security policy), Ansible (rejected: added dependency for simple use case).",
-      rationale: "SSM provides auditable, credential-less access to instances. Health check gates prevent bad deployments from completing. S3 artifact storage enables instant rollback without rebuild.",
-    },
-    failures: [
-      {
-        scenario: "Health check passes but application serves errors",
-        mitigation: "Synthetic transaction testing post-deployment. Automatic rollback if error rate exceeds 1% in first 5 minutes.",
-      },
-      {
-        scenario: "SSM command times out during large artifact transfer",
-        mitigation: "Artifact pre-staged to S3 in region. SSM command only handles download and restart, reducing execution time from 8 minutes to 90 seconds.",
-      },
+    decision: "GitHub Actions builds Docker image for consistency, extracts JAR for EC2. SSM Run Command for deployment. Artifacts versioned in S3 with 30-day retention.",
+    rejected: [
+      "AWS CodePipeline — already using GitHub Actions, didn't want context switching",
+      "Direct SSH — security policy forbids it",
+      "Ansible — added dependency for a simple use case",
     ],
-    metrics: [
-      { label: "Deployment frequency", value: "Monthly → Daily" },
-      { label: "Deployment duration", value: "6 hours → 12 minutes" },
-      { label: "Rollback time", value: "4 hours → 3 minutes" },
+    failureModes: [
+      "Health check passes but app serves errors → synthetic transaction test post-deploy, auto-rollback if error rate >1%",
+      "SSM timeout on large artifacts → pre-stage to S3, SSM only handles download+restart",
     ],
-    stack: ["GitHub Actions", "Docker", "AWS EC2", "SSM", "S3", "CloudWatch"],
+    outcome: "Monthly → daily deploys. 6 hours → 12 minutes. Rollback: 4 hours → 3 minutes.",
+    stack: ["GitHub Actions", "Docker", "AWS EC2", "SSM", "S3"],
   },
   {
-    title: "Linux System Monitoring Suite",
-    subtitle: "Custom observability for bare metal infrastructure",
+    title: "Bash monitoring scripts",
+    oneLiner: "Lightweight observability for legacy systems",
     github: "https://github.com/Adetola-Adedoyin/system-maintenance-tool",
-    problem: {
-      business: "Infrastructure team was reactive—learning about issues from user complaints. No early warning system meant problems escalated before detection.",
-      technical: "Mix of monitoring tools with no correlation. Log files grew unbounded causing disk pressure. No runbooks for common scenarios.",
-    },
+    problem: "No early warning. Team learned about issues from user complaints. Log files filled disks.",
     constraints: [
-      "Budget for tooling was effectively zero—open source only",
-      "Must work on legacy RHEL and modern Ubuntu systems",
-      "Cannot install agents that require kernel modules",
-      "Alerting must integrate with existing Slack workflow",
+      "Zero budget",
+      "Mixed RHEL and Ubuntu",
+      "No kernel module agents",
     ],
-    architecture: {
-      decision: "Bash scripts for collection, exposing Prometheus-compatible metrics. Log rotation with compression. Threshold-based alerting with hysteresis to prevent flapping. Slack webhook for notifications.",
-      alternatives: "Datadog (rejected: cost), New Relic (rejected: cost), node_exporter (rejected: kernel module requirement on legacy systems).",
-      rationale: "Bash is universally available. Prometheus format enables future integration. Hysteresis prevents alert fatigue from oscillating values. Custom scripts can check application-specific health that generic agents miss.",
-    },
-    failures: [
-      {
-        scenario: "Monitoring script consumes excessive CPU during high load",
-        mitigation: "Nice value adjustment for collection scripts. Reduced collection frequency during detected high-load periods.",
-      },
-      {
-        scenario: "Disk alert fires but no one notices during off-hours",
-        mitigation: "Escalation policy with increasing urgency. PagerDuty integration for critical alerts outside business hours.",
-      },
+    decision: "Bash scripts exporting Prometheus-format metrics. Log rotation with compression. Threshold alerting with hysteresis. Slack webhook for notifications.",
+    rejected: [
+      "Datadog — cost",
+      "New Relic — cost",
+      "node_exporter — kernel module requirement on legacy systems",
     ],
-    metrics: [
-      { label: "Mean time to detection", value: "45 min → 2 min" },
-      { label: "Disk space incidents", value: "0 in 12 months" },
-      { label: "False positive rate", value: "<5%" },
+    failureModes: [
+      "Script consumes too much CPU during high load → nice value adjustment, reduced collection frequency under load",
+      "Off-hours alerts missed → escalation policy, PagerDuty for critical",
     ],
-    stack: ["Bash", "Prometheus", "Grafana", "Slack API", "systemd"],
+    outcome: "MTTD: 45 min → 2 min. Zero disk space incidents in 12 months.",
+    stack: ["Bash", "Prometheus", "Grafana", "Slack API"],
   },
 ];
 
-const SystemCard = ({ system, index }: { system: System; index: number }) => {
+const SystemCard = ({ system }: { system: System }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="border border-border rounded-lg overflow-hidden"
-    >
-      {/* Header - always visible */}
+    <div className="border-b border-border last:border-b-0">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full p-6 text-left hover:bg-muted/30 transition-colors"
+        className="w-full py-4 text-left flex items-start justify-between gap-4 hover:bg-muted/20 transition-colors px-2 -mx-2"
       >
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <h3 className="text-xl font-semibold text-foreground mb-1">{system.title}</h3>
-            <p className="text-muted-foreground text-sm">{system.subtitle}</p>
-            <div className="flex flex-wrap gap-2 mt-4">
-              {system.stack.slice(0, 5).map((tech) => (
-                <span
-                  key={tech}
-                  className="px-2 py-1 text-xs font-mono bg-muted text-muted-foreground rounded"
-                >
-                  {tech}
-                </span>
-              ))}
-              {system.stack.length > 5 && (
-                <span className="px-2 py-1 text-xs font-mono text-muted-foreground">
-                  +{system.stack.length - 5}
-                </span>
-              )}
-            </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-sm font-medium text-foreground">{system.title}</span>
+            <span className="text-xs text-muted-foreground">— {system.oneLiner}</span>
           </div>
-          <ChevronDown 
-            className={`w-5 h-5 text-muted-foreground transition-transform ${isExpanded ? 'rotate-180' : ''}`} 
-          />
+          <div className="flex flex-wrap gap-1">
+            {system.stack.slice(0, 4).map((tech) => (
+              <span key={tech} className="text-xs font-mono text-muted-foreground">
+                {tech}
+              </span>
+            ))}
+          </div>
         </div>
+        <ChevronRight 
+          className={`w-4 h-4 text-muted-foreground flex-shrink-0 mt-1 transition-transform ${isExpanded ? 'rotate-90' : ''}`} 
+        />
       </button>
 
-      {/* Expanded content */}
       {isExpanded && (
-        <div className="px-6 pb-6 space-y-8 border-t border-border pt-6">
-          {/* Problem */}
+        <div className="pb-6 pl-2 space-y-6 text-sm">
           <div>
-            <h4 className="font-mono text-sm text-primary uppercase tracking-wider mb-4">The Problem</h4>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-4 bg-muted/30 rounded">
-                <p className="text-xs text-muted-foreground uppercase mb-2">Business Impact</p>
-                <p className="text-sm text-foreground">{system.problem.business}</p>
-              </div>
-              <div className="p-4 bg-muted/30 rounded">
-                <p className="text-xs text-muted-foreground uppercase mb-2">Technical Debt</p>
-                <p className="text-sm text-foreground">{system.problem.technical}</p>
-              </div>
-            </div>
+            <p className="text-xs font-mono text-muted-foreground mb-1">Problem</p>
+            <p className="text-muted-foreground">{system.problem}</p>
           </div>
 
-          {/* Constraints */}
           <div>
-            <h4 className="font-mono text-sm text-primary uppercase tracking-wider mb-4">Constraints</h4>
-            <ul className="grid md:grid-cols-2 gap-2">
-              {system.constraints.map((constraint, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <span className="text-primary">•</span>
-                  {constraint}
-                </li>
+            <p className="text-xs font-mono text-muted-foreground mb-1">Constraints</p>
+            <ul className="text-muted-foreground space-y-1">
+              {system.constraints.map((c, i) => (
+                <li key={i}>• {c}</li>
               ))}
             </ul>
           </div>
 
-          {/* Architecture Decision */}
           <div>
-            <h4 className="font-mono text-sm text-primary uppercase tracking-wider mb-4">Architecture</h4>
-            <div className="space-y-4">
-              <div className="p-4 bg-muted/30 rounded">
-                <p className="text-xs text-muted-foreground uppercase mb-2">Decision</p>
-                <p className="text-sm text-foreground">{system.architecture.decision}</p>
-              </div>
-              <div className="p-4 bg-muted/30 rounded">
-                <p className="text-xs text-muted-foreground uppercase mb-2">Alternatives Rejected</p>
-                <p className="text-sm text-foreground">{system.architecture.alternatives}</p>
-              </div>
-              <div className="p-4 bg-muted/30 rounded">
-                <p className="text-xs text-muted-foreground uppercase mb-2">Rationale</p>
-                <p className="text-sm text-foreground">{system.architecture.rationale}</p>
-              </div>
-            </div>
+            <p className="text-xs font-mono text-muted-foreground mb-1">Decision</p>
+            <p className="text-muted-foreground">{system.decision}</p>
           </div>
 
-          {/* Failure Scenarios */}
           <div>
-            <h4 className="font-mono text-sm text-primary uppercase tracking-wider mb-4">Failure Scenarios & Mitigations</h4>
-            <div className="space-y-4">
-              {system.failures.map((failure, i) => (
-                <div key={i} className="p-4 border border-destructive/20 rounded bg-destructive/5">
-                  <p className="text-xs text-destructive uppercase mb-2">Scenario {i + 1}</p>
-                  <p className="text-sm text-foreground mb-3">{failure.scenario}</p>
-                  <p className="text-xs text-accent uppercase mb-2">Mitigation</p>
-                  <p className="text-sm text-muted-foreground">{failure.mitigation}</p>
-                </div>
+            <p className="text-xs font-mono text-muted-foreground mb-1">Rejected alternatives</p>
+            <ul className="text-muted-foreground space-y-1">
+              {system.rejected.map((r, i) => (
+                <li key={i}>• {r}</li>
               ))}
-            </div>
+            </ul>
           </div>
 
-          {/* Metrics */}
           <div>
-            <h4 className="font-mono text-sm text-primary uppercase tracking-wider mb-4">Measured Outcomes</h4>
-            <div className="grid grid-cols-3 gap-4">
-              {system.metrics.map((metric, i) => (
-                <div key={i} className="text-center p-4 bg-muted/30 rounded">
-                  <p className="text-lg font-mono text-foreground">{metric.value}</p>
-                  <p className="text-xs text-muted-foreground mt-1">{metric.label}</p>
-                </div>
+            <p className="text-xs font-mono text-muted-foreground mb-1">Failure modes + mitigations</p>
+            <ul className="text-muted-foreground space-y-1">
+              {system.failureModes.map((f, i) => (
+                <li key={i}>• {f}</li>
               ))}
-            </div>
+            </ul>
           </div>
 
-          {/* Link */}
+          <div>
+            <p className="text-xs font-mono text-muted-foreground mb-1">Outcome</p>
+            <p className="text-foreground">{system.outcome}</p>
+          </div>
+
           <a
             href={system.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+            className="inline-block text-xs text-primary hover:underline"
           >
-            View implementation <ExternalLink className="w-4 h-4" />
+            Code →
           </a>
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };
 
 const SelectedSystems = () => {
   return (
-    <section id="systems" className="py-24 relative">
+    <section id="systems" className="py-16">
       <div className="container mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="max-w-4xl mb-12"
+          className="max-w-3xl"
         >
-          <div className="flex items-center gap-3 mb-8">
-            <div className="h-px flex-1 bg-border max-w-[60px]" />
-            <span className="font-mono text-sm text-primary uppercase tracking-wider">Selected Systems</span>
-          </div>
-
-          <p className="text-muted-foreground">
-            Production infrastructure I've designed and operated. Each entry details the problem, 
-            constraints, architectural decisions, failure scenarios, and measurable outcomes. 
-            Click to expand.
+          <h2 className="font-mono text-sm text-primary mb-2">Systems</h2>
+          <p className="text-xs text-muted-foreground mb-8">
+            Click to expand. Each includes problem, constraints, decision, rejected alternatives, failure modes, and outcome.
           </p>
-        </motion.div>
 
-        <div className="space-y-4 max-w-4xl">
-          {systems.map((system, index) => (
-            <SystemCard key={system.title} system={system} index={index} />
-          ))}
-        </div>
+          <div>
+            {systems.map((system) => (
+              <SystemCard key={system.title} system={system} />
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
-import { Terminal, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
   { label: "Summary", href: "#about" },
   { label: "Systems", href: "#systems" },
-  { label: "Philosophy", href: "#philosophy" },
-  { label: "Operations", href: "#operations" },
+  { label: "Ops", href: "#operations" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -15,23 +14,18 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border"
     >
       <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-2">
-            <Terminal className="w-5 h-5 text-primary" />
-            <span className="font-mono text-sm text-foreground">
-              adetola<span className="text-primary">.</span>dev
-            </span>
+        <div className="flex items-center justify-between h-14">
+          <a href="#" className="font-mono text-sm text-foreground">
+            adetola.dev
           </a>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navItems.map((item) => (
               <a
                 key={item.label}
@@ -43,35 +37,27 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-foreground"
+            className="md:hidden p-2 text-foreground -mr-2"
           >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
+            {isOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
 
-        {/* Mobile Nav */}
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            className="md:hidden py-4 border-t border-border"
-          >
-            <div className="flex flex-col gap-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="text-muted-foreground hover:text-foreground transition-colors py-2"
-                >
-                  {item.label}
-                </a>
-              ))}
-            </div>
-          </motion.div>
+          <div className="md:hidden py-4 border-t border-border">
+            {navItems.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className="block py-2 text-sm text-muted-foreground hover:text-foreground"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
         )}
       </div>
     </motion.nav>
