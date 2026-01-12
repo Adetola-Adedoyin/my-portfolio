@@ -3,10 +3,10 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
-  { label: "Summary", href: "#about" },
-  { label: "Systems", href: "#systems" },
-  { label: "Ops", href: "#operations" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "#about", emoji: "👨‍💻" },
+  { label: "Systems", href: "#systems", emoji: "⚙️" },
+  { label: "Experience", href: "#operations", emoji: "🚀" },
+  { label: "Contact", href: "#contact", emoji: "📧" },
 ];
 
 const Navbar = () => {
@@ -14,50 +14,57 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-xl border-b border-white/10"
     >
       <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-14">
-          <a href="#" className="font-mono text-sm text-foreground">
-            adetola.dev
+        <div className="flex items-center justify-between h-16">
+          <a href="#" className="text-lg font-bold">
+            <span className="text-gradient">adetola</span>
+            <span className="text-white">.dev</span>
           </a>
 
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group"
               >
-                {item.label}
+                <span className="group-hover:scale-110 transition-transform">{item.emoji}</span>
+                <span>{item.label}</span>
               </a>
             ))}
           </div>
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-foreground -mr-2"
+            className="md:hidden p-2 text-white hover:text-purple-400 transition-colors"
           >
-            {isOpen ? <X size={18} /> : <Menu size={18} />}
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
         {isOpen && (
-          <div className="md:hidden py-4 border-t border-border">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="md:hidden py-4 border-t border-white/10"
+          >
             {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="block py-2 text-sm text-muted-foreground hover:text-foreground"
+                className="flex items-center gap-3 py-3 text-gray-300 hover:text-white transition-colors"
               >
-                {item.label}
+                <span>{item.emoji}</span>
+                <span>{item.label}</span>
               </a>
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
     </motion.nav>

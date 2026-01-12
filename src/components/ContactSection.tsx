@@ -2,43 +2,77 @@ import { motion } from "framer-motion";
 
 const ContactSection = () => {
   return (
-    <section id="contact" className="py-16">
+    <section id="contact" className="py-20">
       <div className="container mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-3xl"
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl mx-auto"
         >
-          <h2 className="font-mono text-sm text-primary mb-6">Contact</h2>
-
-          <div className="text-sm text-muted-foreground space-y-4">
-            <p>
-              Looking for infrastructure roles where reliability matters. 
-              Remote or Lagos-based. Open to relocation for the right fit.
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4">
+              <span className="text-gradient">Let's Build</span>{" "}
+              <span className="text-white">Something Amazing</span>
+            </h2>
+            <p className="text-xl text-gray-300">
+              Ready to collaborate on your next infrastructure project
             </p>
-            
-            <div className="space-y-2 font-mono">
-              <p>
-                <a href="mailto:aborisadeadetola@gmail.com" className="text-foreground hover:text-primary">
-                  aborisadeadetola@gmail.com
-                </a>
-              </p>
-              <p>
-                <a href="https://github.com/Adetola-Adedoyin" className="text-foreground hover:text-primary">
-                  github.com/Adetola-Adedoyin
-                </a>
-              </p>
-              <p>
-                <a href="https://linkedin.com/in/adetola-adedoyin" className="text-foreground hover:text-primary">
-                  linkedin.com/in/adetola-adedoyin
-                </a>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="colorful-card p-8">
+              <h3 className="text-2xl font-semibold text-white mb-4 flex items-center gap-3">
+                <span className="text-2xl">💼</span>
+                Looking For
+              </h3>
+              <p className="text-gray-300 leading-relaxed">
+                Infrastructure roles where reliability and innovation matter. 
+                Remote opportunities or Lagos-based positions. 
+                Open to relocation for the right team and challenge.
               </p>
             </div>
 
-            <p className="text-xs text-muted-foreground pt-4">
+            <div className="warm-card p-8">
+              <h3 className="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
+                <span className="text-2xl">🚀</span>
+                Get In Touch
+              </h3>
+              
+              <div className="space-y-4">
+                <a 
+                  href="mailto:adetoladedoyin001@gmail.com" 
+                  className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group"
+                >
+                  <span className="text-xl group-hover:scale-110 transition-transform">📧</span>
+                  <span>adetoladedoyin001@gmail.com</span>
+                </a>
+                
+                <a 
+                  href="https://github.com/Adetola-Adedoyin" 
+                  className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group"
+                >
+                  <span className="text-xl group-hover:scale-110 transition-transform">🐙</span>
+                  <span>github.com/Adetola-Adedoyin</span>
+                </a>
+                
+                <a 
+                  href="https://linkedin.com/in/adetola-adedoyin" 
+                  className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group"
+                >
+                  <span className="text-xl group-hover:scale-110 transition-transform">💼</span>
+                  <span>linkedin.com/in/adetola-adedoyin</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="glass-card p-6 mt-8 text-center">
+            <p className="text-gray-400 flex items-center justify-center gap-2">
+              <span>⏱️</span>
               I respond to specific inquiries within 48 hours. 
-              Generic recruiter messages go to the bottom of the queue.
+              Quality conversations get priority over generic messages.
             </p>
           </div>
         </motion.div>

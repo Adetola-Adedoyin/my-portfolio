@@ -11,48 +11,42 @@
 
 @layer base {
   :root {
-    --background: 220 20% 4%;
-    --foreground: 180 100% 95%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
 
-    --card: 220 20% 8%;
-    --card-foreground: 180 100% 95%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 220 20% 8%;
-    --popover-foreground: 180 100% 95%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 175 80% 50%;
-    --primary-foreground: 220 20% 4%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 210 20% 98%;
 
-    --secondary: 220 20% 14%;
-    --secondary-foreground: 180 100% 95%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 220 15% 18%;
-    --muted-foreground: 180 20% 60%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
 
-    --accent: 160 100% 45%;
-    --accent-foreground: 220 20% 4%;
+    --accent: 12 76% 61%;
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 180 30% 20%;
-    --input: 220 20% 14%;
-    --ring: 175 80% 50%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 262 83% 58%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    /* Custom DevOps theme tokens */
-    --glow-primary: 175 80% 50%;
-    --glow-accent: 160 100% 45%;
-    --terminal-green: 120 100% 50%;
-    --warning: 45 100% 50%;
-    --gradient-cyber: linear-gradient(135deg, hsl(175, 80%, 50%) 0%, hsl(160, 100%, 45%) 100%);
-    --gradient-dark: linear-gradient(180deg, hsl(220, 20%, 6%) 0%, hsl(220, 20%, 2%) 100%);
-    --shadow-glow: 0 0 30px hsl(175 80% 50% / 0.3);
-    --shadow-glow-sm: 0 0 15px hsl(175 80% 50% / 0.2);
-
-    --font-mono: "JetBrains Mono", monospace;
-    --font-sans: "Inter", system-ui, sans-serif;
+    /* Colorful theme tokens */
+    --gradient-primary: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 50%, #10B981 100%);
+    --gradient-secondary: linear-gradient(135deg, #F59E0B 0%, #EF4444 50%, #EC4899 100%);
+    --gradient-accent: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+    --shadow-colorful: 0 25px 50px -12px rgba(139, 92, 246, 0.25);
+    --shadow-warm: 0 25px 50px -12px rgba(245, 158, 11, 0.25);
   }
 
   * {
@@ -65,34 +59,33 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-family: var(--font-sans);
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   }
 }
 
 @layer components {
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: var(--gradient-cyber);
+    background: var(--gradient-primary);
   }
 
-  .glow-box {
-    box-shadow: var(--shadow-glow);
+  .text-gradient-warm {
+    @apply bg-clip-text text-transparent;
+    background: var(--gradient-secondary);
   }
 
-  .glow-box-sm {
-    box-shadow: var(--shadow-glow-sm);
+  .colorful-card {
+    @apply bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-emerald-500/10 backdrop-blur-xl border border-purple-500/20 rounded-2xl;
+    box-shadow: var(--shadow-colorful);
   }
 
-  .terminal-text {
-    font-family: var(--font-mono);
+  .warm-card {
+    @apply bg-gradient-to-br from-orange-500/10 via-red-500/10 to-pink-500/10 backdrop-blur-xl border border-orange-500/20 rounded-2xl;
+    box-shadow: var(--shadow-warm);
   }
 
   .glass-card {
-    @apply bg-card/80 backdrop-blur-xl border border-border/50;
-  }
-
-  .cyber-border {
-    @apply border border-primary/30 hover:border-primary/60 transition-colors;
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl;
   }
 }
 

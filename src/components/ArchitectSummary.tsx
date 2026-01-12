@@ -2,38 +2,102 @@ import { motion } from "framer-motion";
 
 const ArchitectSummary = () => {
   return (
-    <section id="about" className="py-16">
+    <section id="about" className="py-20">
       <div className="container mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-3xl"
+          transition={{ duration: 0.6 }}
+          className="max-w-5xl mx-auto"
         >
-          <h2 className="font-mono text-sm text-primary mb-6">Summary</h2>
-
-          <div className="space-y-4 text-muted-foreground text-sm leading-relaxed">
-            <p>
-              I've operated production infrastructure on AWS for the past few years. 
-              Mostly Terraform, Kubernetes, CI/CD pipelines. Some bare metal.
-            </p>
-            <p>
-              My job is making sure deployments don't break things and failures don't cascade. 
-              I write the automation, set up the monitoring, and get paged when it goes wrong.
-            </p>
-            <p>
-              I'm not interested in tools for their own sake. I pick what works, document why, 
-              and move on.
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4">
+              <span className="text-gradient">About</span>{" "}
+              <span className="text-white">Me</span>
+            </h2>
+            <p className="text-xl text-gray-300">
+              Building reliable infrastructure that teams can depend on
             </p>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-border">
-            <h3 className="font-mono text-xs text-muted-foreground mb-4">Recent context</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>• Currently at Cyberspace Limited (Lagos) — multi-tier AWS, GitHub Actions, Docker</li>
-              <li>• Previously managed IT for ~200 users at Ekiti State University Staff School</li>
-              <li>• BSc Educational Technology, University of Ilorin</li>
-            </ul>
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <div className="colorful-card p-8">
+              <h3 className="text-2xl font-semibold text-white mb-4 flex items-center gap-3">
+                <span className="text-2xl">🎯</span>
+                My Approach
+              </h3>
+              <div className="space-y-4 text-gray-300 leading-relaxed">
+                <p>
+                  I've been building and operating production infrastructure on AWS for several years. 
+                  My focus is on creating systems that are reliable, scalable, and maintainable.
+                </p>
+                <p>
+                  I believe in choosing the right tools for the job, not the newest ones. 
+                  Terraform for infrastructure, Kubernetes for orchestration, and solid CI/CD pipelines 
+                  that teams can trust.
+                </p>
+              </div>
+            </div>
+
+            <div className="warm-card p-8">
+              <h3 className="text-2xl font-semibold text-white mb-4 flex items-center gap-3">
+                <span className="text-2xl">🛡️</span>
+                What I Do
+              </h3>
+              <div className="space-y-4 text-gray-300 leading-relaxed">
+                <p>
+                  My job is ensuring deployments are smooth and failures don't cascade. 
+                  I write the automation, set up comprehensive monitoring, and yes - 
+                  I get paged when things go wrong.
+                </p>
+                <p>
+                  I'm passionate about infrastructure as code, observability, and building 
+                  systems that let developers focus on what they do best.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="glass-card p-8">
+            <h3 className="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
+              <span className="text-2xl">📈</span>
+              Experience Highlights
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="text-3xl mb-2">🏢</div>
+                <h4 className="font-semibold text-white mb-2">Current Role</h4>
+                <p className="text-gray-300 text-sm">
+                  Infrastructure Engineer at Cyberspace Limited (Lagos)
+                </p>
+                <p className="text-gray-400 text-xs mt-1">
+                  Multi-tier AWS, GitHub Actions, Docker
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="text-3xl mb-2">🏫</div>
+                <h4 className="font-semibold text-white mb-2">Previous Experience</h4>
+                <p className="text-gray-300 text-sm">
+                  IT Management for ~200 users
+                </p>
+                <p className="text-gray-400 text-xs mt-1">
+                  Ekiti State University Staff School
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="text-3xl mb-2">🎓</div>
+                <h4 className="font-semibold text-white mb-2">Education</h4>
+                <p className="text-gray-300 text-sm">
+                  BSc Educational Technology
+                </p>
+                <p className="text-gray-400 text-xs mt-1">
+                  University of Ilorin
+                </p>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
