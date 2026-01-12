@@ -91,15 +91,15 @@ const ProjectsSection = () => {
 
           <div className="text-center">
             <a 
-              href="https://adetola-adedoyin.netlify.app"
+              href="https://github.com/Adetola-Adedoyin"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 warm-card px-8 py-4 hover:scale-105 transition-transform"
             >
-              <span className="text-2xl">🔗</span>
+              <span className="text-2xl">🐙</span>
               <div>
-                <div className="text-white font-semibold">Visit Full Portfolio</div>
-                <div className="text-gray-300 text-sm">adetola-adedoyin.netlify.app</div>
+                <div className="text-white font-semibold">View GitHub Repository</div>
+                <div className="text-gray-300 text-sm">github.com/Adetola-Adedoyin</div>
               </div>
             </a>
           </div>
