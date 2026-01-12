@@ -2,8 +2,14 @@ import { motion } from "framer-motion";
 
 const ArchitectSummary = () => {
   return (
-    <section id="about" className="py-20">
-      <div className="container mx-auto px-6">
+    <section id="about" className="py-20 relative overflow-hidden">
+      {/* Background patterns */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-10 right-10 w-64 h-64 bg-gradient-to-r from-purple-500/5 to-blue-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 left-10 w-48 h-48 bg-gradient-to-r from-orange-500/5 to-pink-500/5 rounded-full blur-2xl"></div>
+      </div>
+      
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -13,7 +19,7 @@ const ArchitectSummary = () => {
         >
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">
-              <span className="text-gradient">About</span>{" "}
+              <span className="text-purple-400">About</span>{" "}
               <span className="text-white">Me</span>
             </h2>
             <p className="text-xl text-gray-300">

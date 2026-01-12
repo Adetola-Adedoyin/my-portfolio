@@ -2,8 +2,16 @@ import { motion } from "framer-motion";
 
 const ContactSection = () => {
   return (
-    <section id="contact" className="py-20">
-      <div className="container mx-auto px-6">
+    <section id="contact" className="py-20 relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 right-1/4 w-56 h-56 bg-blue-500/5 rounded-full blur-2xl animate-pulse"></div>
+        <div className="absolute top-1/2 left-0 w-40 h-40 bg-emerald-500/5 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-1/3 right-0 w-32 h-32 bg-orange-500/5 rounded-full blur-lg animate-pulse"></div>
+      </div>
+      
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -13,7 +21,7 @@ const ContactSection = () => {
         >
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">
-              <span className="text-gradient">Let's Build</span>{" "}
+              <span className="text-purple-400">Let's Build</span>{" "}
               <span className="text-white">Something Amazing</span>
             </h2>
             <p className="text-xl text-gray-300">

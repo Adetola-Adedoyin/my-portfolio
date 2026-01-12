@@ -6,7 +6,7 @@ const Footer = () => {
           <div className="flex items-center gap-2">
             <span className="text-2xl">🚀</span>
             <p className="text-gray-400">
-              Built with ❤️ by <span className="text-gradient font-semibold">Adetola Adedoyin</span>
+              Built with ❤️ by <span className="text-purple-400 font-semibold">Adetola Adedoyin</span>
             </p>
           </div>
           

@@ -5,7 +5,7 @@ import { useState } from "react";
 const navItems = [
   { label: "About", href: "#about", emoji: "👨‍💻" },
   { label: "Systems", href: "#systems", emoji: "⚙️" },
-  { label: "Experience", href: "#operations", emoji: "🚀" },
+  { label: "Projects", href: "#projects", emoji: "🚀" },
   { label: "Contact", href: "#contact", emoji: "📧" },
 ];
 
@@ -22,7 +22,7 @@ const Navbar = () => {
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           <a href="#" className="text-lg font-bold">
-            <span className="text-gradient">adetola</span>
+            <span className="text-purple-400">adetola</span>
             <span className="text-white">.dev</span>
           </a>
 
