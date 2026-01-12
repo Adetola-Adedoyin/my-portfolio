@@ -18,22 +18,39 @@ const HeroSection = () => {
           transition={{ duration: 0.6 }}
           className="max-w-5xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 mb-6">
-            <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-            <p className="text-sm text-emerald-400 font-medium">
-              Available for opportunities · Lagos · Remote · Open to relocation
-            </p>
-          </div>
+          <div className="flex flex-col md:flex-row items-center gap-8 mb-8">
+            {/* Profile Image */}
+            <div className="flex-shrink-0">
+              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 p-1">
+                <img 
+                  src="/profile.jpg" 
+                  alt="Adetola Adedoyin" 
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </div>
+            </div>
+            
+            {/* Text Content */}
+            <div className="flex-1 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 mb-6">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                <p className="text-sm text-emerald-400 font-medium">
+                  Available for opportunities · Lagos · Remote · Open to relocation
+                </p>
+              </div>
 
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="text-purple-400">Adetola</span>{" "}
-            <span className="text-white">Adedoyin</span>
-          </h1>
+              <h1 className="text-5xl md:text-6xl font-bold mb-6">
+                <span className="text-purple-400">Adetola</span>{" "}
+                <span className="text-white">Adedoyin</span>
+              </h1>
+            </div>
+          </div>
           
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl leading-relaxed">
+          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl leading-relaxed text-center mx-auto">
             Infrastructure Engineer passionate about building{" "}
             <span className="text-orange-400 font-semibold">reliable systems</span> that scale.
-            Specializing in AWS, Kubernetes, and Terraform.
+            Specializing in AWS, Kubernetes, and Terraform to create robust, 
+            maintainable infrastructure that teams can depend on.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-8">
