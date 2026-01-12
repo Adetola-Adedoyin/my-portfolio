@@ -28,7 +28,7 @@ const Navbar = () => {
                 <Terminal className="w-5 h-5 text-primary" />
               </div>
               <span className="font-mono font-bold text-foreground hidden sm:block">
-                dev<span className="text-primary">ops</span>.engineer
+                adetola<span className="text-primary">.dev</span>
               </span>
             </a>
 

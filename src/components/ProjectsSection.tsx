@@ -1,27 +1,60 @@
 import { motion } from "framer-motion";
-import { ExternalLink, Github, Cloud, Container, GitBranch } from "lucide-react";
+import { ExternalLink, Github, Folder } from "lucide-react";
 
 const projects = [
   {
-    title: "Multi-Cloud Infrastructure",
-    description: "Terraform-based multi-cloud architecture spanning AWS and GCP with automated failover and global load balancing.",
-    tags: ["Terraform", "AWS", "GCP", "Kubernetes"],
-    icon: Cloud,
-    gradient: "from-primary to-accent",
+    title: "Multi-Tier AWS Deployment with Terraform",
+    description: "Provisioned cloud infrastructure using Terraform modules (VPC, EC2, security groups). Deployed three EC2 instances to cater for front-end, backend, and database. Configured access via public IP.",
+    tags: ["AWS", "Terraform", "VPC", "EC2"],
+    github: "https://github.com/Adetola-Adedoyin/Educloud",
   },
   {
-    title: "GitOps Pipeline Platform",
-    description: "End-to-end GitOps platform using ArgoCD and GitHub Actions, enabling zero-touch deployments across 50+ microservices.",
-    tags: ["ArgoCD", "GitHub Actions", "Helm", "K8s"],
-    icon: GitBranch,
-    gradient: "from-accent to-primary",
+    title: "GitOps Workflow with ArgoCD",
+    description: "Complete GitOps workflow and monitoring setup for a portfolio application deployed on a local Kubernetes cluster using Helm, ArgoCD, Prometheus, and Grafana.",
+    tags: ["Kubernetes", "ArgoCD", "Helm", "Prometheus", "Grafana"],
+    github: "https://github.com/Adetola-Adedoyin/adetola-k8s-portfolio",
   },
   {
-    title: "Container Orchestration",
-    description: "Production-grade Kubernetes cluster with auto-scaling, self-healing, and comprehensive observability stack.",
-    tags: ["Kubernetes", "Prometheus", "Grafana", "ELK"],
-    icon: Container,
-    gradient: "from-primary to-accent",
+    title: "Multi-Tenant K8s Cluster",
+    description: "Deployment steps for deploying Kubernetes on Bare Metal with multi-tenant configuration for isolated workloads.",
+    tags: ["Kubernetes", "Bare Metal", "Multi-Tenant"],
+    github: "https://github.com/Adetola-Adedoyin/Multi-tenant-K8s-cluster",
+  },
+  {
+    title: "CI/CD Pipeline for Spring Boot App",
+    description: "Built GitHub Actions pipeline that builds, tests, packages, and deploys app on AWS. Integrated Docker image pull, SSM command execution, and container run automation.",
+    tags: ["GitHub Actions", "Docker", "AWS", "Spring Boot"],
+    github: "https://github.com/Adetola-Adedoyin/spring-boot-update-2",
+  },
+  {
+    title: "Dotnet App Deployment on Ubuntu Server",
+    description: "Deployment steps for the eShopOnWeb application using Docker and NGINX on a Linux server with production-ready configuration.",
+    tags: ["Docker", "Nginx", ".NET", "Linux"],
+    github: "https://github.com/Adetola-Adedoyin/dotnet-app-on-prem",
+  },
+  {
+    title: "VM Monitoring with Bash Scripts",
+    description: "Scripts to monitor system logs, memory usage, and service uptime on Linux servers. Improved visibility into system health, reduced downtime via early alerting.",
+    tags: ["Bash", "Linux", "Monitoring", "Scripting"],
+    github: "https://github.com/Adetola-Adedoyin/system-maintenance-tool",
+  },
+  {
+    title: "Terraform-EC2-S3",
+    description: "Provisioned infrastructure using Terraform. Creates an EC2 instance and stores the state file in an S3 bucket for remote state management.",
+    tags: ["Terraform", "AWS", "EC2", "S3"],
+    github: "https://github.com/Adetola-Adedoyin/Terraform-EC2-S3",
+  },
+  {
+    title: "Ubuntu-Nginx ASP.NET Core Deployment",
+    description: "Bash script that automates deployment of an ASP.NET Core application on Ubuntu. Sets up dependencies, configures Nginx as reverse proxy, and runs as systemd service.",
+    tags: ["Bash", "Nginx", ".NET", "Automation"],
+    github: "https://github.com/Adetola-Adedoyin/ubuntu-nginx",
+  },
+  {
+    title: "Windows IIS Automation Script",
+    description: "Bash script to automate the installation and configuration of IIS on a Windows server via the terminal.",
+    tags: ["PowerShell", "IIS", "Windows", "Automation"],
+    github: "https://github.com/Adetola-Adedoyin/windows-IIS",
   },
 ];
 
@@ -38,87 +71,90 @@ const ProjectsSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="font-mono text-primary text-sm mb-4 block">// featured work</span>
+          <span className="font-mono text-primary text-sm mb-4 block">// portfolio</span>
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Recent <span className="text-gradient">Projects</span>
+            Featured <span className="text-gradient">Projects</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            A selection of infrastructure projects that showcase scalability, reliability, and automation.
+            Real-world infrastructure projects showcasing IaC, CI/CD, containerization, and cloud automation.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
-              className="group relative"
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+              className="group p-6 rounded-xl glass-card cyber-border hover:border-primary/60 transition-all duration-300"
             >
-              <div className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-xl from-primary to-accent" />
-              
-              <div className="relative p-8 rounded-xl glass-card cyber-border group-hover:border-primary/60 transition-all duration-300 h-full flex flex-col">
-                {/* Icon */}
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-r ${project.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                  <project.icon className="w-7 h-7 text-primary-foreground" />
+              {/* Header */}
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <Folder className="w-6 h-6 text-primary" />
                 </div>
-
-                {/* Content */}
-                <h3 className="text-xl font-bold mb-3 text-foreground">{project.title}</h3>
-                <p className="text-muted-foreground mb-6 flex-grow">{project.description}</p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 text-xs font-mono text-primary bg-primary/10 rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div className="flex gap-3">
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    <Github size={20} />
+                  </a>
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    <ExternalLink size={20} />
+                  </a>
                 </div>
+              </div>
 
-                {/* Links */}
-                <div className="flex gap-4">
-                  <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                    <Github size={16} />
-                    <span>Code</span>
-                  </button>
-                  <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                    <ExternalLink size={16} />
-                    <span>Demo</span>
-                  </button>
-                </div>
+              {/* Content */}
+              <h3 className="text-lg font-semibold mb-3 text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                {project.title}
+              </h3>
+              <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
+                {project.description}
+              </p>
+
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-xs font-mono text-primary/80 bg-primary/5 px-2 py-1 rounded"
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Terminal output effect */}
+        {/* GitHub CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-16 p-6 rounded-xl glass-card cyber-border max-w-3xl mx-auto"
+          transition={{ delay: 0.3 }}
+          className="text-center mt-12"
         >
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-3 h-3 rounded-full bg-destructive" />
-            <div className="w-3 h-3 rounded-full bg-warning" />
-            <div className="w-3 h-3 rounded-full bg-accent" />
-            <span className="ml-4 text-sm text-muted-foreground font-mono">terminal</span>
-          </div>
-          <div className="font-mono text-sm space-y-1">
-            <p><span className="text-accent">$</span> <span className="text-muted-foreground">kubectl get pods -A</span></p>
-            <p className="text-primary">✓ All 127 pods running healthy</p>
-            <p><span className="text-accent">$</span> <span className="text-muted-foreground">terraform plan</span></p>
-            <p className="text-primary">✓ 0 to add, 0 to change, 0 to destroy</p>
-            <p><span className="text-accent">$</span> <span className="text-muted-foreground">git push origin main</span></p>
-            <p className="text-primary">✓ CI/CD pipeline triggered. Deploying to production...</p>
-          </div>
+          <a
+            href="https://github.com/Adetola-Adedoyin"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 border border-primary text-primary font-semibold rounded-lg hover:bg-primary/10 transition-all duration-300"
+          >
+            <Github size={20} />
+            View More on GitHub
+          </a>
         </motion.div>
       </div>
     </section>
