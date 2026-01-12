@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Mail, Github, Linkedin, Zap, Settings, Globe, Shield, BarChart } from "lucide-react";
 
 const HeroSection = () => {
   return (
@@ -55,35 +56,41 @@ const HeroSection = () => {
 
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             <div className="colorful-card px-6 py-3">
-              <span className="text-purple-300 font-medium">☁️ Cloud Architecture</span>
+              <span className="text-purple-300 font-medium flex items-center gap-2">
+                <Globe className="w-4 h-4" /> Cloud Architecture
+              </span>
             </div>
             <div className="warm-card px-6 py-3">
-              <span className="text-orange-300 font-medium">🚀 DevOps Excellence</span>
+              <span className="text-orange-300 font-medium flex items-center gap-2">
+                <Zap className="w-4 h-4" /> DevOps Excellence
+              </span>
             </div>
             <div className="glass-card px-6 py-3">
-              <span className="text-blue-300 font-medium">🔧 Infrastructure as Code</span>
+              <span className="text-blue-300 font-medium flex items-center gap-2">
+                <Settings className="w-4 h-4" /> Infrastructure as Code
+              </span>
             </div>
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 text-gray-400 mb-8">
             <a href="mailto:adetoladedoyin001@gmail.com" className="hover:text-purple-400 transition-colors flex items-center gap-2">
-              <span>📧</span> adetoladedoyin001@gmail.com
+              <Mail className="w-4 h-4" /> adetoladedoyin001@gmail.com
             </a>
             <a href="https://github.com/Adetola-Adedoyin" className="hover:text-blue-400 transition-colors flex items-center gap-2">
-              <span>🐙</span> GitHub
+              <Github className="w-4 h-4" /> GitHub
             </a>
             <a href="https://linkedin.com/in/adetola-adedoyin" className="hover:text-emerald-400 transition-colors flex items-center gap-2">
-              <span>💼</span> LinkedIn
+              <Linkedin className="w-4 h-4" /> LinkedIn
             </a>
           </div>
 
           {/* Floating tech icons */}
           <div className="flex justify-center gap-8 mt-12">
-            <div className="text-4xl animate-bounce" style={{animationDelay: '0s'}}>⚡</div>
-            <div className="text-4xl animate-bounce" style={{animationDelay: '0.2s'}}>🛠️</div>
-            <div className="text-4xl animate-bounce" style={{animationDelay: '0.4s'}}>🌐</div>
-            <div className="text-4xl animate-bounce" style={{animationDelay: '0.6s'}}>🔒</div>
-            <div className="text-4xl animate-bounce" style={{animationDelay: '0.8s'}}>📊</div>
+            <Zap className="w-8 h-8 text-yellow-400 animate-bounce" style={{animationDelay: '0s'}} />
+            <Settings className="w-8 h-8 text-blue-400 animate-bounce" style={{animationDelay: '0.2s'}} />
+            <Globe className="w-8 h-8 text-green-400 animate-bounce" style={{animationDelay: '0.4s'}} />
+            <Shield className="w-8 h-8 text-red-400 animate-bounce" style={{animationDelay: '0.6s'}} />
+            <BarChart className="w-8 h-8 text-purple-400 animate-bounce" style={{animationDelay: '0.8s'}} />
           </div>
         </motion.div>
       </div>

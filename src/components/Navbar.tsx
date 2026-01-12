@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, Settings, Rocket, Mail } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
-  { label: "About", href: "#about", emoji: "👨‍💻" },
-  { label: "Systems", href: "#systems", emoji: "⚙️" },
-  { label: "Projects", href: "#projects", emoji: "🚀" },
-  { label: "Contact", href: "#contact", emoji: "📧" },
+  { label: "About", href: "#about", icon: User },
+  { label: "Systems", href: "#systems", icon: Settings },
+  { label: "Projects", href: "#projects", icon: Rocket },
+  { label: "Contact", href: "#contact", icon: Mail },
 ];
 
 const Navbar = () => {
@@ -27,16 +27,19 @@ const Navbar = () => {
           </a>
 
           <div className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group"
-              >
-                <span className="group-hover:scale-110 transition-transform">{item.emoji}</span>
-                <span>{item.label}</span>
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group"
+                >
+                  <IconComponent className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  <span>{item.label}</span>
+                </a>
+              );
+            })}
           </div>
 
           <button
@@ -53,17 +56,20 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             className="md:hidden py-4 border-t border-white/10"
           >
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 py-3 text-gray-300 hover:text-white transition-colors"
-              >
-                <span>{item.emoji}</span>
-                <span>{item.label}</span>
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 py-3 text-gray-300 hover:text-white transition-colors"
+                >
+                  <IconComponent className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </a>
+              );
+            })}
           </motion.div>
         )}
       </div>
