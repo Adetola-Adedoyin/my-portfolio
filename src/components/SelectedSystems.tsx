@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronDown, ExternalLink } from "lucide-react";
 
 interface System {
   title: string;
@@ -13,6 +13,7 @@ interface System {
   failureModes: string[];
   outcome: string;
   stack: string[];
+  emoji: string;
 }
 
 const systems: System[] = [
@@ -38,6 +39,7 @@ const systems: System[] = [
     ],
     outcome: "Environment provisioning: 2 weeks → 45 minutes. Zero drift incidents in 12 months.",
     stack: ["Terraform", "AWS VPC", "EC2", "RDS", "S3", "IAM"],
+    emoji: "☁️"
   },
   {
     title: "GitOps with ArgoCD",
@@ -61,6 +63,7 @@ const systems: System[] = [
     ],
     outcome: "Merge to prod: 4 hours → 8 minutes. Deployment success: 85% → 99%.",
     stack: ["Kubernetes", "ArgoCD", "Helm", "Prometheus", "Grafana"],
+    emoji: "🚢"
   },
   {
     title: "Multi-tenant K8s",
@@ -84,6 +87,7 @@ const systems: System[] = [
     ],
     outcome: "Zero cross-tenant incidents in 18 months. 95% self-service provisioning.",
     stack: ["Kubernetes", "Calico", "OPA Gatekeeper", "Prometheus"],
+    emoji: "🏗️"
   },
   {
     title: "Spring Boot CI/CD",
@@ -107,6 +111,7 @@ const systems: System[] = [
     ],
     outcome: "Monthly → daily deploys. 6 hours → 12 minutes. Rollback: 4 hours → 3 minutes.",
     stack: ["GitHub Actions", "Docker", "AWS EC2", "SSM", "S3"],
+    emoji: "🚀"
   },
   {
     title: "Bash monitoring scripts",
@@ -130,6 +135,7 @@ const systems: System[] = [
     ],
     outcome: "MTTD: 45 min → 2 min. Zero disk space incidents in 12 months.",
     stack: ["Bash", "Prometheus", "Grafana", "Slack API"],
+    emoji: "📊"
   },
 ];
 
@@ -137,101 +143,129 @@ const SystemCard = ({ system }: { system: System }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="border-b border-border last:border-b-0">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="colorful-card p-6 mb-6"
+    >
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full py-4 text-left flex items-start justify-between gap-4 hover:bg-muted/20 transition-colors px-2 -mx-2"
+        className="w-full text-left flex items-start justify-between gap-4 hover:opacity-80 transition-opacity"
       >
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-sm font-medium text-foreground">{system.title}</span>
-            <span className="text-xs text-muted-foreground">— {system.oneLiner}</span>
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-2xl">{system.emoji}</span>
+            <h3 className="text-lg font-semibold text-white">{system.title}</h3>
           </div>
-          <div className="flex flex-wrap gap-1">
+          <p className="text-gray-300 text-sm mb-3">{system.oneLiner}</p>
+          <div className="flex flex-wrap gap-2">
             {system.stack.slice(0, 4).map((tech) => (
-              <span key={tech} className="text-xs font-mono text-muted-foreground">
+              <span key={tech} className="px-2 py-1 bg-white/10 rounded text-xs text-gray-300">
                 {tech}
               </span>
             ))}
           </div>
         </div>
-        <ChevronRight 
-          className={`w-4 h-4 text-muted-foreground flex-shrink-0 mt-1 transition-transform ${isExpanded ? 'rotate-90' : ''}`} 
+        <ChevronDown 
+          className={`w-5 h-5 text-gray-400 flex-shrink-0 mt-2 transition-transform ${isExpanded ? 'rotate-180' : ''}`} 
         />
       </button>
 
       {isExpanded && (
-        <div className="pb-6 pl-2 space-y-6 text-sm">
-          <div>
-            <p className="text-xs font-mono text-muted-foreground mb-1">Problem</p>
-            <p className="text-muted-foreground">{system.problem}</p>
+        <motion.div 
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          className="mt-6 pt-6 border-t border-white/10 space-y-4"
+        >
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="text-purple-400 font-medium mb-2">🎯 Problem</h4>
+              <p className="text-gray-300 text-sm">{system.problem}</p>
+            </div>
+
+            <div>
+              <h4 className="text-orange-400 font-medium mb-2">⚡ Constraints</h4>
+              <ul className="text-gray-300 text-sm space-y-1">
+                {system.constraints.map((c, i) => (
+                  <li key={i}>• {c}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-blue-400 font-medium mb-2">✅ Decision</h4>
+              <p className="text-gray-300 text-sm">{system.decision}</p>
+            </div>
+
+            <div>
+              <h4 className="text-red-400 font-medium mb-2">❌ Rejected</h4>
+              <ul className="text-gray-300 text-sm space-y-1">
+                {system.rejected.map((r, i) => (
+                  <li key={i}>• {r}</li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div>
-            <p className="text-xs font-mono text-muted-foreground mb-1">Constraints</p>
-            <ul className="text-muted-foreground space-y-1">
-              {system.constraints.map((c, i) => (
-                <li key={i}>• {c}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <p className="text-xs font-mono text-muted-foreground mb-1">Decision</p>
-            <p className="text-muted-foreground">{system.decision}</p>
-          </div>
-
-          <div>
-            <p className="text-xs font-mono text-muted-foreground mb-1">Rejected alternatives</p>
-            <ul className="text-muted-foreground space-y-1">
-              {system.rejected.map((r, i) => (
-                <li key={i}>• {r}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <p className="text-xs font-mono text-muted-foreground mb-1">Failure modes + mitigations</p>
-            <ul className="text-muted-foreground space-y-1">
+            <h4 className="text-yellow-400 font-medium mb-2">🛡️ Failure Modes & Mitigations</h4>
+            <ul className="text-gray-300 text-sm space-y-1">
               {system.failureModes.map((f, i) => (
                 <li key={i}>• {f}</li>
               ))}
             </ul>
           </div>
 
-          <div>
-            <p className="text-xs font-mono text-muted-foreground mb-1">Outcome</p>
-            <p className="text-foreground">{system.outcome}</p>
+          <div className="flex items-center justify-between pt-4 border-t border-white/10">
+            <div>
+              <h4 className="text-emerald-400 font-medium mb-2">🎉 Outcome</h4>
+              <p className="text-white font-medium">{system.outcome}</p>
+            </div>
+            <a
+              href={system.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 rounded-lg text-purple-300 hover:text-white transition-colors"
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span>View Code</span>
+            </a>
           </div>
-
-          <a
-            href={system.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-xs text-primary hover:underline"
-          >
-            Code →
-          </a>
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
 const SelectedSystems = () => {
   return (
-    <section id="systems" className="py-16">
-      <div className="container mx-auto px-6">
+    <section id="systems" className="py-20 relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-10 right-10 w-48 h-48 bg-blue-500/5 rounded-full blur-2xl animate-pulse"></div>
+        <div className="absolute bottom-10 left-10 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl animate-pulse"></div>
+      </div>
+      
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-3xl"
+          className="max-w-6xl mx-auto"
         >
-          <h2 className="font-mono text-sm text-primary mb-2">Systems</h2>
-          <p className="text-xs text-muted-foreground mb-8">
-            Click to expand. Each includes problem, constraints, decision, rejected alternatives, failure modes, and outcome.
-          </p>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4">
+              <span className="text-purple-400">System</span>{" "}
+              <span className="text-white">Architecture</span>
+            </h2>
+            <p className="text-xl text-gray-300 mb-2">
+              Real-world infrastructure solutions and decisions
+            </p>
+            <p className="text-gray-400">
+              Click to expand. Each includes problem, constraints, decision, rejected alternatives, failure modes, and outcome.
+            </p>
+          </div>
 
           <div>
             {systems.map((system) => (

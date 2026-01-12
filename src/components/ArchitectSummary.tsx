@@ -35,7 +35,7 @@ const ArchitectSummary = () => {
               </h3>
               <div className="space-y-4 text-gray-300 leading-relaxed">
                 <p>
-                  I've been building and operating production infrastructure on AWS for several years. 
+                  I've been building and operating production infrastructure on AWS for the past year. 
                   My focus is on creating systems that are reliable, scalable, and maintainable.
                 </p>
                 <p>

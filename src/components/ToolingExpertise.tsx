@@ -29,7 +29,7 @@ const ToolingExpertise = () => {
               <span className="text-foreground">Observability:</span> Prometheus, Grafana, Loki. CloudWatch when on AWS. ELK for log aggregation.
             </p>
             <p>
-              <span className="text-foreground">Languages:</span> Bash for glue. Python for automation. Learning Go for CLI tools.
+              <span className="text-foreground">Languages:</span> Bash for glue scripts. Python for automation and tooling.
             </p>
           </div>
         </motion.div>
